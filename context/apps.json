@@ -1,0 +1,22 @@
+{
+  "apps": [
+    {
+      "app_id": "4c1e7a52-0b9d-4f3e-8a61-2d5f9e0b7c13",
+      "display_name": "Northwind eSign",
+      "publisher": "Northwind Traders",
+      "verified_publisher": true,
+      "sanctioned": true,
+      "approved_permissions": ["User.Read", "Files.Read"],
+      "notes": "Approved e-signature vendor for contracts. Admin-consented by IT in 2025."
+    },
+    {
+      "app_id": "a7d03f81-6e2c-4b95-9c1a-58e4b2f6d0a9",
+      "display_name": "Harborline Timesheets",
+      "publisher": "Harborline Federal",
+      "verified_publisher": true,
+      "sanctioned": true,
+      "approved_permissions": ["User.Read"],
+      "notes": "Internal line-of-business app."
+    }
+  ]
+}

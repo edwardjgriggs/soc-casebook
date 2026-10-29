@@ -129,9 +129,27 @@ class IpReputation(_Strict):
     records: list[IpRecord]
 
 
+class AppRecord(_Strict):
+    app_id: str = Field(pattern=r"^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$")
+    display_name: str
+    publisher: str
+    verified_publisher: bool
+    sanctioned: bool
+    approved_permissions: list[str] = []
+    notes: str = ""
+
+
+class AppCatalog(_Strict):
+    apps: list[AppRecord]
+
+
 def load_directory(path: Path) -> Directory:
     return Directory.model_validate(json.loads(path.read_text(encoding="utf-8")))
 
 
 def load_ip_reputation(path: Path) -> IpReputation:
     return IpReputation.model_validate(json.loads(path.read_text(encoding="utf-8")))
+
+
+def load_app_catalog(path: Path) -> AppCatalog:
+    return AppCatalog.model_validate(json.loads(path.read_text(encoding="utf-8")))
