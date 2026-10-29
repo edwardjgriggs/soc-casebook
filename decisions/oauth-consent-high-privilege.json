@@ -1,0 +1,37 @@
+{
+  "analyst": "Edward Griggs",
+  "verdict": "true_positive",
+  "severity": "Critical",
+  "rationale": "Override. The AI stopped at needs_more_info because it could not prove the app was illegitimate. The app catalog settles it. Harborline's real e-signature vendor is Northwind eSign, app 4c1e7a52-0b9d-4f3e-8a61-2d5f9e0b7c13, verified publisher, admin-consented by IT, approved for User.Read and Files.Read only. The consented app has a different app ID, a name built to look like the sanctioned one, and asks for Mail.ReadWrite plus offline_access through user consent. A real Northwind add-in would not need Ada to consent at all, and would not need to write to her mailbox. That is an illicit consent grant: a refresh token with read and write on a CUI-handling mailbox that survives a password reset. Waiting for more information leaves that token live.",
+  "ai_actions": [
+    {
+      "action": "notify_user",
+      "target": "ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "Find the lure. Whatever sent her the consent link likely went to others."
+    },
+    {
+      "action": "remove_oauth_grant",
+      "target": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 (service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60), delegated grant for ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "Cut the app's access to her mailbox now."
+    },
+    {
+      "action": "revoke_sessions",
+      "target": "ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "Invalidate refresh tokens issued under the grant."
+    }
+  ],
+  "added_actions": [
+    {
+      "action": "remove_oauth_grant",
+      "target": "service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60 (tenant-wide)",
+      "reason": "Disable and delete the service principal so no other user can consent to it. Removing one user's grant leaves the app available to the next click."
+    }
+  ],
+  "tuning_notes": [
+    "Enrichment looks apps up by exact ID only, so a lookalike scores the same as any unknown app. Add a display-name similarity check against sanctioned apps and flag a near match with a different app ID. That single field is what moved this case from 'unknown' to 'malicious'.",
+    "Turn off user consent for apps from unverified publishers in Entra. The detection is the backstop, not the control."
+  ]
+}

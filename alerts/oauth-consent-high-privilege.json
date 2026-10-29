@@ -1,0 +1,72 @@
+{
+  "id": "oauth-consent-high-privilege",
+  "title": "User consent to a mail-access app named like the e-signature vendor",
+  "fired_at": "2026-10-27T18:15:00Z",
+  "detection": {
+    "name": "High-privilege OAuth consent",
+    "rule_id": "1f6d8b20-7c3a-4a91-be55-3d9e0c2f8146",
+    "technique_id": "T1528",
+    "technique_name": "Steal Application Access Token",
+    "tactic": "Credential Access",
+    "severity": "High",
+    "source_table": "AuditLogs"
+  },
+  "entities": {
+    "users": [
+      "ada.marsh@harborline.example"
+    ],
+    "ips": [
+      "198.51.100.24"
+    ],
+    "apps": [
+      "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274"
+    ]
+  },
+  "detection_output": {
+    "TimeGenerated": "2026-10-27T18:00:00Z",
+    "OperationName": "Consent to application",
+    "Result": "success",
+    "InitiatedBy": "ada.marsh@harborline.example",
+    "Targets": "[{\"id\":\"5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60\",\"type\":\"ServicePrincipal\",\"displayName\":\"Northwind eSign for Outlook\",\"modifiedProperties\":[{\"displayName\":\"ConsentContext.IsAdminConsent\",\"newValue\":\"False\"},{\"displayName\":\"ConsentContext.OnBehalfOfAll\",\"newValue\":\"False\"},{\"displayName\":\"ConsentAction.Permissions\",\"newValue\":\"Scope: Mail.ReadWrite offline_access User.Read openid profile\"},{\"displayName\":\"TargetId.ServicePrincipalNames\",\"newValue\":\"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\"}]}]",
+    "CorrelationId": "3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95"
+  },
+  "evidence": [
+    {
+      "TimeGenerated": "2026-10-27T18:00:00Z",
+      "OperationName": "Consent to application",
+      "Result": "success",
+      "InitiatedBy": {
+        "user": {
+          "userPrincipalName": "ada.marsh@harborline.example",
+          "ipAddress": "198.51.100.24"
+        }
+      },
+      "TargetResources": [
+        {
+          "id": "5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60",
+          "type": "ServicePrincipal",
+          "displayName": "Northwind eSign for Outlook",
+          "modifiedProperties": [
+            {
+              "displayName": "ConsentContext.IsAdminConsent",
+              "newValue": "False"
+            },
+            {
+              "displayName": "ConsentContext.OnBehalfOfAll",
+              "newValue": "False"
+            },
+            {
+              "displayName": "ConsentAction.Permissions",
+              "newValue": "Scope: Mail.ReadWrite offline_access User.Read openid profile"
+            },
+            {
+              "displayName": "TargetId.ServicePrincipalNames",
+              "newValue": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274"
+            }
+          ]
+        }
+      ],
+      "CorrelationId": "3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95"
+    }
+  ]
+}

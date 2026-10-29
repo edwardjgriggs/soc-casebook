@@ -1,0 +1,409 @@
+{
+  "schema_version": 1,
+  "case_id": "oauth-consent-high-privilege",
+  "recorded_at": "2026-10-29T04:02:14.665515Z",
+  "alert": {
+    "id": "oauth-consent-high-privilege",
+    "title": "User consent to a mail-access app named like the e-signature vendor",
+    "fired_at": "2026-10-27T18:15:00Z",
+    "detection": {
+      "name": "High-privilege OAuth consent",
+      "rule_id": "1f6d8b20-7c3a-4a91-be55-3d9e0c2f8146",
+      "technique_id": "T1528",
+      "technique_name": "Steal Application Access Token",
+      "tactic": "Credential Access",
+      "severity": "High",
+      "source_table": "AuditLogs"
+    },
+    "entities": {
+      "users": [
+        "ada.marsh@harborline.example"
+      ],
+      "ips": [
+        "198.51.100.24"
+      ],
+      "apps": [
+        "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274"
+      ]
+    },
+    "detection_output": {
+      "TimeGenerated": "2026-10-27T18:00:00Z",
+      "OperationName": "Consent to application",
+      "Result": "success",
+      "InitiatedBy": "ada.marsh@harborline.example",
+      "Targets": "[{\"id\":\"5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60\",\"type\":\"ServicePrincipal\",\"displayName\":\"Northwind eSign for Outlook\",\"modifiedProperties\":[{\"displayName\":\"ConsentContext.IsAdminConsent\",\"newValue\":\"False\"},{\"displayName\":\"ConsentContext.OnBehalfOfAll\",\"newValue\":\"False\"},{\"displayName\":\"ConsentAction.Permissions\",\"newValue\":\"Scope: Mail.ReadWrite offline_access User.Read openid profile\"},{\"displayName\":\"TargetId.ServicePrincipalNames\",\"newValue\":\"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\"}]}]",
+      "CorrelationId": "3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95"
+    },
+    "evidence": [
+      {
+        "TimeGenerated": "2026-10-27T18:00:00Z",
+        "OperationName": "Consent to application",
+        "Result": "success",
+        "InitiatedBy": {
+          "user": {
+            "userPrincipalName": "ada.marsh@harborline.example",
+            "ipAddress": "198.51.100.24"
+          }
+        },
+        "TargetResources": [
+          {
+            "id": "5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60",
+            "type": "ServicePrincipal",
+            "displayName": "Northwind eSign for Outlook",
+            "modifiedProperties": [
+              {
+                "displayName": "ConsentContext.IsAdminConsent",
+                "newValue": "False"
+              },
+              {
+                "displayName": "ConsentContext.OnBehalfOfAll",
+                "newValue": "False"
+              },
+              {
+                "displayName": "ConsentAction.Permissions",
+                "newValue": "Scope: Mail.ReadWrite offline_access User.Read openid profile"
+              },
+              {
+                "displayName": "TargetId.ServicePrincipalNames",
+                "newValue": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274"
+              }
+            ]
+          }
+        ],
+        "CorrelationId": "3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95"
+      }
+    ]
+  },
+  "enrichment": {
+    "sources": [
+      "context/directory.json",
+      "context/ip-reputation.json",
+      "context/apps.json"
+    ],
+    "users": [
+      {
+        "upn": "ada.marsh@harborline.example",
+        "found": true,
+        "display_name": "Ada Marsh",
+        "title": "Contracts Manager",
+        "department": "Contracts",
+        "is_admin": false,
+        "admin_roles": [],
+        "mfa_methods": [
+          "Microsoft Authenticator push"
+        ],
+        "usual_countries": [
+          "US"
+        ],
+        "known_ips": [
+          "198.51.100.10",
+          "198.51.100.24"
+        ],
+        "notes": "Handles subcontractor agreements and CUI-marked proposal material. Works hybrid from Virginia.",
+        "alert_ips_not_known_for_user": [],
+        "alert_countries_outside_usual": []
+      }
+    ],
+    "ips": [
+      {
+        "ip": "198.51.100.24",
+        "found": true,
+        "country": "US",
+        "asn": "AS64500",
+        "owner": "Harborline Federal VPN",
+        "reputation": "benign",
+        "notes": "Always-on VPN concentrator for remote staff."
+      }
+    ],
+    "apps": [
+      {
+        "app_id": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274",
+        "found": false
+      }
+    ]
+  },
+  "model_call": {
+    "model_requested": "claude-sonnet-5-5",
+    "model_served": "claude-sonnet-5-5",
+    "request_id": "req_011CgVrykbZkHnRniacdpb4J",
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 3642,
+      "output_tokens": 2228
+    },
+    "system_prompt": "You are the first-pass triage analyst in the security operations team at Harborline Federal, a 60-person federal contractor that runs on Microsoft 365 and holds NIST SP 800-171 obligations for Controlled Unclassified Information (CUI).\n\nA detection has fired. You will receive the alert (the detection's metadata, its output row, and the raw log rows that fired it) and offline enrichment: directory records for the users involved, reputation records for the IPs, and catalog records for any applications. Your assessment goes to a human analyst who makes the final call. You do not act. Every action you recommend waits for a human to approve or reject it.\n\nHow to work:\n\n- Reason only from the alert and the enrichment. Do not assume facts that are not in front of you. When something matters and is missing, say so in `open_questions` instead of guessing.\n- Weigh the benign explanations honestly before settling on a verdict, and list the ones you considered. A wrong \"malicious\" call costs the analyst time; a wrong \"benign\" call can cost the company its CUI.\n- Treat enrichment that says \"not found\" as information. An account, IP, or application the organization has no record of is a fact worth stating.\n- Cite evidence by what it shows: timestamps, result codes, IPs, permissions, counts.\n- Recommend the smallest set of containment actions that would hold if the alert is real. Use `no_action` only when you judge the activity benign. Name the specific target of each action (a UPN, an IP, an application ID).\n- Map the activity to MITRE ATT&CK techniques you can support from the evidence. The detection's own technique is a starting point, not a requirement.\n- Detection tuning notes are for the detection engineer: what made this alert noisy or useful, and what would improve the rule.\n\nVerdicts:\n\n- `true_positive`: malicious or unauthorized activity.\n- `benign_true_positive`: the detection logic fired correctly, but the activity is authorized or explained.\n- `false_positive`: the detection fired on activity it should not have matched.\n- `needs_more_info`: the evidence does not support a call either way.\n\nConfidence is how sure you are of the verdict: `low`, `medium`, or `high`.\n\nAll people, domains, and IP addresses in this environment are fictional. Analyze them as if they were real.\n",
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "true_positive",
+            "benign_true_positive",
+            "false_positive",
+            "needs_more_info"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High",
+            "Critical"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "time",
+              "event"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "key_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "benign_explanations_considered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "disable_account",
+                  "revoke_sessions",
+                  "reset_password",
+                  "require_mfa_reregistration",
+                  "remove_oauth_grant",
+                  "block_ip",
+                  "notify_user",
+                  "no_action"
+                ]
+              },
+              "target": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "action",
+              "target",
+              "rationale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "attack_mapping": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "technique_id": {
+                "type": "string"
+              },
+              "technique_name": {
+                "type": "string"
+              },
+              "tactic": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "technique_id",
+              "technique_name",
+              "tactic"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "detection_tuning_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "verdict",
+        "confidence",
+        "severity",
+        "summary",
+        "timeline",
+        "key_evidence",
+        "benign_explanations_considered",
+        "recommended_actions",
+        "attack_mapping",
+        "detection_tuning_notes",
+        "open_questions"
+      ],
+      "additionalProperties": false
+    },
+    "user_message": "Triage this alert.\n\n<alert>\n{\n  \"detection\": {\n    \"name\": \"High-privilege OAuth consent\",\n    \"rule_id\": \"1f6d8b20-7c3a-4a91-be55-3d9e0c2f8146\",\n    \"severity\": \"High\",\n    \"source_table\": \"AuditLogs\",\n    \"tactic\": \"Credential Access\",\n    \"technique_id\": \"T1528\",\n    \"technique_name\": \"Steal Application Access Token\"\n  },\n  \"detection_output\": {\n    \"CorrelationId\": \"3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95\",\n    \"InitiatedBy\": \"ada.marsh@harborline.example\",\n    \"OperationName\": \"Consent to application\",\n    \"Result\": \"success\",\n    \"Targets\": \"[{\\\"id\\\":\\\"5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60\\\",\\\"type\\\":\\\"ServicePrincipal\\\",\\\"displayName\\\":\\\"Northwind eSign for Outlook\\\",\\\"modifiedProperties\\\":[{\\\"displayName\\\":\\\"ConsentContext.IsAdminConsent\\\",\\\"newValue\\\":\\\"False\\\"},{\\\"displayName\\\":\\\"ConsentContext.OnBehalfOfAll\\\",\\\"newValue\\\":\\\"False\\\"},{\\\"displayName\\\":\\\"ConsentAction.Permissions\\\",\\\"newValue\\\":\\\"Scope: Mail.ReadWrite offline_access User.Read openid profile\\\"},{\\\"displayName\\\":\\\"TargetId.ServicePrincipalNames\\\",\\\"newValue\\\":\\\"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\\\"}]}]\",\n    \"TimeGenerated\": \"2026-10-27T18:00:00Z\"\n  },\n  \"entities\": {\n    \"apps\": [\n      \"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\"\n    ],\n    \"ips\": [\n      \"198.51.100.24\"\n    ],\n    \"users\": [\n      \"ada.marsh@harborline.example\"\n    ]\n  },\n  \"evidence\": [\n    {\n      \"CorrelationId\": \"3c7e9a14-2b5f-4d08-9e61-a8f04c2d7b95\",\n      \"InitiatedBy\": {\n        \"user\": {\n          \"ipAddress\": \"198.51.100.24\",\n          \"userPrincipalName\": \"ada.marsh@harborline.example\"\n        }\n      },\n      \"OperationName\": \"Consent to application\",\n      \"Result\": \"success\",\n      \"TargetResources\": [\n        {\n          \"displayName\": \"Northwind eSign for Outlook\",\n          \"id\": \"5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60\",\n          \"modifiedProperties\": [\n            {\n              \"displayName\": \"ConsentContext.IsAdminConsent\",\n              \"newValue\": \"False\"\n            },\n            {\n              \"displayName\": \"ConsentContext.OnBehalfOfAll\",\n              \"newValue\": \"False\"\n            },\n            {\n              \"displayName\": \"ConsentAction.Permissions\",\n              \"newValue\": \"Scope: Mail.ReadWrite offline_access User.Read openid profile\"\n            },\n            {\n              \"displayName\": \"TargetId.ServicePrincipalNames\",\n              \"newValue\": \"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\"\n            }\n          ],\n          \"type\": \"ServicePrincipal\"\n        }\n      ],\n      \"TimeGenerated\": \"2026-10-27T18:00:00Z\"\n    }\n  ],\n  \"fired_at\": \"2026-10-27T18:15:00Z\",\n  \"id\": \"oauth-consent-high-privilege\",\n  \"title\": \"User consent to a mail-access app named like the e-signature vendor\"\n}\n</alert>\n\n<enrichment>\n{\n  \"apps\": [\n    {\n      \"app_id\": \"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274\",\n      \"found\": false\n    }\n  ],\n  \"ips\": [\n    {\n      \"asn\": \"AS64500\",\n      \"country\": \"US\",\n      \"found\": true,\n      \"ip\": \"198.51.100.24\",\n      \"notes\": \"Always-on VPN concentrator for remote staff.\",\n      \"owner\": \"Harborline Federal VPN\",\n      \"reputation\": \"benign\"\n    }\n  ],\n  \"sources\": [\n    \"context/directory.json\",\n    \"context/ip-reputation.json\",\n    \"context/apps.json\"\n  ],\n  \"users\": [\n    {\n      \"admin_roles\": [],\n      \"alert_countries_outside_usual\": [],\n      \"alert_ips_not_known_for_user\": [],\n      \"department\": \"Contracts\",\n      \"display_name\": \"Ada Marsh\",\n      \"found\": true,\n      \"is_admin\": false,\n      \"known_ips\": [\n        \"198.51.100.10\",\n        \"198.51.100.24\"\n      ],\n      \"mfa_methods\": [\n        \"Microsoft Authenticator push\"\n      ],\n      \"notes\": \"Handles subcontractor agreements and CUI-marked proposal material. Works hybrid from Virginia.\",\n      \"title\": \"Contracts Manager\",\n      \"upn\": \"ada.marsh@harborline.example\",\n      \"usual_countries\": [\n        \"US\"\n      ]\n    }\n  ]\n}\n</enrichment>",
+    "raw_output": "{\"verdict\":\"needs_more_info\",\"confidence\":\"low\",\"severity\":\"High\",\"summary\":\"Ada Marsh (Contracts Manager, non-admin, handles CUI-marked proposal material) consented as herself at 18:00:00Z on 2026-10-27 to 'Northwind eSign for Outlook', granting Mail.ReadWrite and offline_access (persistent refresh token). The app (client ID e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274) is not found in the organization's app catalog. The user, IP, and consent type look normal (known VPN IP, usual country, not admin consent, not tenant-wide), and a contracts manager could plausibly want an e-signature add-in. But the unvetted app, the broad mailbox read/write scope, the persistent token, and the vendor-style name (a common lure for illicit consent grants) mean the activity cannot be called benign. The evidence also cannot prove it malicious: it shows no sign-in anomaly, no post-consent mailbox activity, and no verified publisher. Treat as potentially risky until the app's legitimacy is established.\",\"timeline\":[{\"time\":\"2026-10-27T18:00:00Z\",\"event\":\"ada.marsh@harborline.example consented (user consent, not admin, not on behalf of all) to 'Northwind eSign for Outlook' with scopes Mail.ReadWrite, offline_access, User.Read, openid, profile, from 198.51.100.24 (Harborline VPN). Result: success.\"},{\"time\":\"2026-10-27T18:15:00Z\",\"event\":\"High-privilege OAuth consent detection fired.\"}],\"key_evidence\":[\"Consent granted with Mail.ReadWrite (read, modify, and delete mail) plus offline_access (refresh token that outlives the browser session) on 2026-10-27T18:00:00Z, Result: success.\",\"App ID e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 returned found: false in the app catalog, so the organization has no record of vetting or approving it.\",\"The display name 'Northwind eSign for Outlook' resembles a legitimate e-signature vendor, which fits both a genuine add-in and a brand-impersonation consent phish; the evidence cannot distinguish them.\",\"IsAdminConsent=False and OnBehalfOfAll=False: exposure is limited to Ada Marsh's own mailbox, not tenant-wide.\",\"Source IP 198.51.100.24 is the Harborline always-on VPN concentrator, reputation benign, in Ada's known_ips, and the country is within her usual (US). This argues against a foreign attacker session, but a phished user on the VPN would look the same.\",\"Ada's mailbox is high-value: Contracts Manager handling subcontractor agreements and CUI-marked proposal material, so exposure of her mail could mean CUI exposure under NIST SP 800-171.\",\"The alert contains no information on publisher verification, the app's reply URLs, how Ada reached the consent prompt (phishing email versus self-install), or any subsequent Graph API activity.\"],\"benign_explanations_considered\":[\"Ada installed a real e-signature add-in for Outlook to handle subcontractor agreements: plausible given her role and the VPN IP, but the app is not in the catalog and no approval record is visible.\",\"A sanctioned IT or contracts-team rollout of an e-sign tool: possible, but the app catalog has no entry, so there is no support for it.\",\"Normal user behavior from a trusted network and known IP: true for the sign-in context, but it does not validate the app itself, since a phished consent is also granted from the victim's own session.\"],\"recommended_actions\":[{\"action\":\"notify_user\",\"target\":\"ada.marsh@harborline.example\",\"rationale\":\"Ask Ada whether she knowingly installed the add-in, where she got the link or prompt (email, vendor site, Outlook store), and whether a business need exists. This is the fastest way to resolve the verdict.\"},{\"action\":\"remove_oauth_grant\",\"target\":\"e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 (service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60), delegated grant for ada.marsh@harborline.example\",\"rationale\":\"Revoke the grant pending vetting. If the app is illicit, it holds a refresh token with read/write access to a CUI-handling mailbox, and this stops it. If legitimate, Ada can re-consent after approval, so the cost is low.\"},{\"action\":\"revoke_sessions\",\"target\":\"ada.marsh@harborline.example\",\"rationale\":\"Invalidate refresh tokens issued to the app along with Ada's other sessions so access does not outlive the grant removal.\"}],\"attack_mapping\":[{\"technique_id\":\"T1528\",\"technique_name\":\"Steal Application Access Token\",\"tactic\":\"Credential Access\"},{\"technique_id\":\"T1566.002\",\"technique_name\":\"Phishing: Spearphishing Link\",\"tactic\":\"Initial Access\"},{\"technique_id\":\"T1114.002\",\"technique_name\":\"Email Collection: Remote Email Collection\",\"tactic\":\"Collection\"}],\"detection_tuning_notes\":[\"The rule correctly flagged a user-consented, unvetted app with Mail.ReadWrite and offline_access. Keep this combination as a high-signal trigger.\",\"Enrich with publisher verification status, app creation date, tenant of origin, and reply URLs to help separate real vendors from lookalikes.\",\"Add a correlation step that pulls MailItemsAccessed and Graph activity by the app's service principal in the hour after consent, to show whether data was read.\",\"Consider tuning severity: unknown app (not in catalog) plus mail write scope plus a CUI-handling user should score higher than the same grant to a cataloged app.\",\"Alert on first-seen app IDs across the tenant, not just per user, to catch multi-user consent campaigns.\"],\"open_questions\":[\"Did Ada knowingly install this add-in, and what prompted it (email link, colleague, vendor site)?\",\"Is 'Northwind eSign for Outlook' a vendor Harborline uses or has approved, and is the publisher verified in Entra ID?\",\"Did the app's service principal access Ada's mailbox via Graph (reads, sends, rules, forwarding) after 18:00:00Z?\",\"Did other users consent to this same app ID, and was there a related phishing email delivered to Harborline mailboxes?\",\"What are the app's reply URLs and tenant of origin, and was the service principal created recently?\",\"Were any inbox rules or forwarding settings created on Ada's mailbox around the consent time?\"]}"
+  },
+  "assessment": {
+    "verdict": "needs_more_info",
+    "confidence": "low",
+    "severity": "High",
+    "summary": "Ada Marsh (Contracts Manager, non-admin, handles CUI-marked proposal material) consented as herself at 18:00:00Z on 2026-10-27 to 'Northwind eSign for Outlook', granting Mail.ReadWrite and offline_access (persistent refresh token). The app (client ID e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274) is not found in the organization's app catalog. The user, IP, and consent type look normal (known VPN IP, usual country, not admin consent, not tenant-wide), and a contracts manager could plausibly want an e-signature add-in. But the unvetted app, the broad mailbox read/write scope, the persistent token, and the vendor-style name (a common lure for illicit consent grants) mean the activity cannot be called benign. The evidence also cannot prove it malicious: it shows no sign-in anomaly, no post-consent mailbox activity, and no verified publisher. Treat as potentially risky until the app's legitimacy is established.",
+    "timeline": [
+      {
+        "time": "2026-10-27T18:00:00Z",
+        "event": "ada.marsh@harborline.example consented (user consent, not admin, not on behalf of all) to 'Northwind eSign for Outlook' with scopes Mail.ReadWrite, offline_access, User.Read, openid, profile, from 198.51.100.24 (Harborline VPN). Result: success."
+      },
+      {
+        "time": "2026-10-27T18:15:00Z",
+        "event": "High-privilege OAuth consent detection fired."
+      }
+    ],
+    "key_evidence": [
+      "Consent granted with Mail.ReadWrite (read, modify, and delete mail) plus offline_access (refresh token that outlives the browser session) on 2026-10-27T18:00:00Z, Result: success.",
+      "App ID e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 returned found: false in the app catalog, so the organization has no record of vetting or approving it.",
+      "The display name 'Northwind eSign for Outlook' resembles a legitimate e-signature vendor, which fits both a genuine add-in and a brand-impersonation consent phish; the evidence cannot distinguish them.",
+      "IsAdminConsent=False and OnBehalfOfAll=False: exposure is limited to Ada Marsh's own mailbox, not tenant-wide.",
+      "Source IP 198.51.100.24 is the Harborline always-on VPN concentrator, reputation benign, in Ada's known_ips, and the country is within her usual (US). This argues against a foreign attacker session, but a phished user on the VPN would look the same.",
+      "Ada's mailbox is high-value: Contracts Manager handling subcontractor agreements and CUI-marked proposal material, so exposure of her mail could mean CUI exposure under NIST SP 800-171.",
+      "The alert contains no information on publisher verification, the app's reply URLs, how Ada reached the consent prompt (phishing email versus self-install), or any subsequent Graph API activity."
+    ],
+    "benign_explanations_considered": [
+      "Ada installed a real e-signature add-in for Outlook to handle subcontractor agreements: plausible given her role and the VPN IP, but the app is not in the catalog and no approval record is visible.",
+      "A sanctioned IT or contracts-team rollout of an e-sign tool: possible, but the app catalog has no entry, so there is no support for it.",
+      "Normal user behavior from a trusted network and known IP: true for the sign-in context, but it does not validate the app itself, since a phished consent is also granted from the victim's own session."
+    ],
+    "recommended_actions": [
+      {
+        "action": "notify_user",
+        "target": "ada.marsh@harborline.example",
+        "rationale": "Ask Ada whether she knowingly installed the add-in, where she got the link or prompt (email, vendor site, Outlook store), and whether a business need exists. This is the fastest way to resolve the verdict."
+      },
+      {
+        "action": "remove_oauth_grant",
+        "target": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 (service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60), delegated grant for ada.marsh@harborline.example",
+        "rationale": "Revoke the grant pending vetting. If the app is illicit, it holds a refresh token with read/write access to a CUI-handling mailbox, and this stops it. If legitimate, Ada can re-consent after approval, so the cost is low."
+      },
+      {
+        "action": "revoke_sessions",
+        "target": "ada.marsh@harborline.example",
+        "rationale": "Invalidate refresh tokens issued to the app along with Ada's other sessions so access does not outlive the grant removal."
+      }
+    ],
+    "attack_mapping": [
+      {
+        "technique_id": "T1528",
+        "technique_name": "Steal Application Access Token",
+        "tactic": "Credential Access"
+      },
+      {
+        "technique_id": "T1566.002",
+        "technique_name": "Phishing: Spearphishing Link",
+        "tactic": "Initial Access"
+      },
+      {
+        "technique_id": "T1114.002",
+        "technique_name": "Email Collection: Remote Email Collection",
+        "tactic": "Collection"
+      }
+    ],
+    "detection_tuning_notes": [
+      "The rule correctly flagged a user-consented, unvetted app with Mail.ReadWrite and offline_access. Keep this combination as a high-signal trigger.",
+      "Enrich with publisher verification status, app creation date, tenant of origin, and reply URLs to help separate real vendors from lookalikes.",
+      "Add a correlation step that pulls MailItemsAccessed and Graph activity by the app's service principal in the hour after consent, to show whether data was read.",
+      "Consider tuning severity: unknown app (not in catalog) plus mail write scope plus a CUI-handling user should score higher than the same grant to a cataloged app.",
+      "Alert on first-seen app IDs across the tenant, not just per user, to catch multi-user consent campaigns."
+    ],
+    "open_questions": [
+      "Did Ada knowingly install this add-in, and what prompted it (email link, colleague, vendor site)?",
+      "Is 'Northwind eSign for Outlook' a vendor Harborline uses or has approved, and is the publisher verified in Entra ID?",
+      "Did the app's service principal access Ada's mailbox via Graph (reads, sends, rules, forwarding) after 18:00:00Z?",
+      "Did other users consent to this same app ID, and was there a related phishing email delivered to Harborline mailboxes?",
+      "What are the app's reply URLs and tenant of origin, and was the service principal created recently?",
+      "Were any inbox rules or forwarding settings created on Ada's mailbox around the consent time?"
+    ]
+  },
+  "decision": {
+    "analyst": "Edward Griggs",
+    "decided_at": "2026-10-29T04:03:17.325043Z",
+    "verdict": "true_positive",
+    "severity": "Critical",
+    "rationale": "Override. The AI stopped at needs_more_info because it could not prove the app was illegitimate. The app catalog settles it. Harborline's real e-signature vendor is Northwind eSign, app 4c1e7a52-0b9d-4f3e-8a61-2d5f9e0b7c13, verified publisher, admin-consented by IT, approved for User.Read and Files.Read only. The consented app has a different app ID, a name built to look like the sanctioned one, and asks for Mail.ReadWrite plus offline_access through user consent. A real Northwind add-in would not need Ada to consent at all, and would not need to write to her mailbox. That is an illicit consent grant: a refresh token with read and write on a CUI-handling mailbox that survives a password reset. Waiting for more information leaves that token live.",
+    "actions": [
+      {
+        "action": "notify_user",
+        "target": "ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Find the lure. Whatever sent her the consent link likely went to others.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "remove_oauth_grant",
+        "target": "e93b5c1d-7a40-4d2f-b8e6-0c3a91f5d274 (service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60), delegated grant for ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Cut the app's access to her mailbox now.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "revoke_sessions",
+        "target": "ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Invalidate refresh tokens issued under the grant.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "remove_oauth_grant",
+        "target": "service principal 5f0d2a8c-91b3-4e67-a4d1-7c2e8b9f3a60 (tenant-wide)",
+        "source": "analyst",
+        "status": "approved",
+        "reason": "Disable and delete the service principal so no other user can consent to it. Removing one user's grant leaves the app available to the next click.",
+        "approver": "Edward Griggs"
+      }
+    ],
+    "tuning_notes": [
+      "Enrichment looks apps up by exact ID only, so a lookalike scores the same as any unknown app. Add a display-name similarity check against sanctioned apps and flag a near match with a different app ID. That single field is what moved this case from 'unknown' to 'malicious'.",
+      "Turn off user consent for apps from unverified publishers in Entra. The detection is the backstop, not the control."
+    ]
+  }
+}
