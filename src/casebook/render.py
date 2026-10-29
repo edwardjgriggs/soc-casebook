@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+from datetime import UTC, datetime
 from typing import Any
 
 from casebook.records import Run
@@ -41,6 +42,10 @@ def _bullets(items: list[str], empty: str = "None.") -> list[str]:
 
 def _attack_url(technique_id: str) -> str:
     return "https://attack.mitre.org/techniques/" + technique_id.replace(".", "/") + "/"
+
+
+def _ts(dt: datetime) -> str:
+    return dt.astimezone(UTC).strftime("%Y-%m-%dT%H:%M:%SZ")
 
 
 def _verdict(v: str) -> str:
@@ -92,10 +97,10 @@ def render_case(run: Run) -> str:
     out += ["## 2. Timeline", ""]
     rows: list[list[Any]] = [[t.time, t.event, "AI, from evidence"] for t in ai.timeline]
     rows.append([alert["fired_at"], f"Detection fired: {det['name']}", "SIEM"])
-    rows.append([run.recorded_at.isoformat(), f"AI assessment recorded ({call.model_served})",
+    rows.append([_ts(run.recorded_at), f"AI assessment recorded ({call.model_served})",
                  "casebook"])
     if dec is not None:
-        rows.append([dec.decided_at.isoformat(), f"Decision by {dec.analyst}: "
+        rows.append([_ts(dec.decided_at), f"Decision by {dec.analyst}: "
                      f"{_verdict(dec.verdict)}", "analyst"])
     out += _table(["Time (UTC)", "Event", "Source"], rows)
     out.append("")
@@ -103,7 +108,8 @@ def render_case(run: Run) -> str:
     # 3. Evidence
     out += ["## 3. Evidence", "", "### Detection output", ""]
     out += _table(["Field", "Value"], [[k, v] for k, v in alert["detection_output"].items()])
-    out += ["", f"### Log rows that fired ({det['source_table']}, {len(alert['evidence'])} rows)",
+    n = len(alert["evidence"])
+    out += ["", f"### Log rows that fired ({det['source_table']}, {n} row{'s' if n != 1 else ''})",
             ""]
     columns: list[str] = []
     for row in alert["evidence"]:
@@ -187,7 +193,7 @@ def render_case(run: Run) -> str:
     else:
         out += [
             f"**Analyst:** {dec.analyst}  ",
-            f"**Decided:** {dec.decided_at.isoformat()}  ",
+            f"**Decided:** {_ts(dec.decided_at)}  ",
             f"**Verdict:** {_verdict(dec.verdict)} ({dec.severity})",
             "",
             dec.rationale,
