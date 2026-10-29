@@ -1,0 +1,100 @@
+{
+  "type": "object",
+  "properties": {
+    "verdict": {
+      "type": "string",
+      "enum": ["true_positive", "benign_true_positive", "false_positive", "needs_more_info"]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["low", "medium", "high"]
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["Low", "Medium", "High", "Critical"]
+    },
+    "summary": {
+      "type": "string"
+    },
+    "timeline": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "time": {"type": "string"},
+          "event": {"type": "string"}
+        },
+        "required": ["time", "event"],
+        "additionalProperties": false
+      }
+    },
+    "key_evidence": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "benign_explanations_considered": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "recommended_actions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "type": "string",
+            "enum": [
+              "disable_account",
+              "revoke_sessions",
+              "reset_password",
+              "require_mfa_reregistration",
+              "remove_oauth_grant",
+              "block_ip",
+              "notify_user",
+              "no_action"
+            ]
+          },
+          "target": {"type": "string"},
+          "rationale": {"type": "string"}
+        },
+        "required": ["action", "target", "rationale"],
+        "additionalProperties": false
+      }
+    },
+    "attack_mapping": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "technique_id": {"type": "string"},
+          "technique_name": {"type": "string"},
+          "tactic": {"type": "string"}
+        },
+        "required": ["technique_id", "technique_name", "tactic"],
+        "additionalProperties": false
+      }
+    },
+    "detection_tuning_notes": {
+      "type": "array",
+      "items": {"type": "string"}
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  },
+  "required": [
+    "verdict",
+    "confidence",
+    "severity",
+    "summary",
+    "timeline",
+    "key_evidence",
+    "benign_explanations_considered",
+    "recommended_actions",
+    "attack_mapping",
+    "detection_tuning_notes",
+    "open_questions"
+  ],
+  "additionalProperties": false
+}
