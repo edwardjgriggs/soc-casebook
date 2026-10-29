@@ -1,0 +1,96 @@
+{
+  "id": "brute-force-then-success",
+  "title": "Password guessing then a successful sign-in for the finance director",
+  "fired_at": "2026-10-27T13:20:00Z",
+  "detection": {
+    "name": "Brute force then success on one account",
+    "rule_id": "8e21a6b0-3c4d-4f19-91aa-7d2e5c8f3012",
+    "technique_id": "T1110.001",
+    "technique_name": "Password Guessing",
+    "tactic": "Credential Access",
+    "severity": "High",
+    "source_table": "SigninLogs"
+  },
+  "entities": {
+    "users": [
+      "priya.nair@harborline.example"
+    ],
+    "ips": [
+      "203.0.113.50"
+    ],
+    "apps": []
+  },
+  "detection_output": {
+    "UserPrincipalName": "priya.nair@harborline.example",
+    "FailCount": 9,
+    "FailIPs": [
+      "203.0.113.50"
+    ],
+    "FirstFail": "2026-10-27T13:00:00Z",
+    "LastFail": "2026-10-27T13:02:40Z",
+    "SuccessTime": "2026-10-27T13:03:10Z",
+    "SuccessIP": "203.0.113.50"
+  },
+  "evidence": [
+    {
+      "TimeGenerated": "2026-10-27T13:00:00Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:00:20Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:00:40Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:01:00Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:01:20Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:01:40Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:02:00Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:02:20Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:02:40Z",
+      "ResultType": "50126",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    },
+    {
+      "TimeGenerated": "2026-10-27T13:03:10Z",
+      "ResultType": "0",
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "IPAddress": "203.0.113.50"
+    }
+  ]
+}

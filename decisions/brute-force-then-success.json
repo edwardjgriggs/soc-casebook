@@ -1,0 +1,48 @@
+{
+  "analyst": "Edward Griggs",
+  "verdict": "true_positive",
+  "severity": "Critical",
+  "rationale": "Agree with the AI, including Critical. Nine wrong passwords at machine cadence from a bulletproof host with a malicious reputation, then a success from the same IP 30 seconds later: the password was guessed. The open question is MFA. The success row does not say whether push was satisfied, so assume the attacker has a session. She is the finance director at a CUI contractor, which makes her mailbox a payment-fraud target as well as a data target.",
+  "ai_actions": [
+    {
+      "action": "revoke_sessions",
+      "target": "priya.nair@harborline.example",
+      "status": "approved",
+      "reason": "Kill whatever session the 13:03:10Z sign-in produced."
+    },
+    {
+      "action": "reset_password",
+      "target": "priya.nair@harborline.example",
+      "status": "approved",
+      "reason": "The password was guessed."
+    },
+    {
+      "action": "block_ip",
+      "target": "203.0.113.50",
+      "status": "approved",
+      "reason": "Hosting provider with a malicious reputation, not residential space. No business traffic will come from it, so the block has no collateral."
+    },
+    {
+      "action": "require_mfa_reregistration",
+      "target": "priya.nair@harborline.example",
+      "status": "approved",
+      "reason": "Until the sign-in logs show how MFA was satisfied, her registered methods cannot be trusted."
+    },
+    {
+      "action": "notify_user",
+      "target": "priya.nair@harborline.example",
+      "status": "approved",
+      "reason": "Confirm by phone, not email, since the mailbox may be in the attacker's hands."
+    }
+  ],
+  "added_actions": [
+    {
+      "action": "disable_account",
+      "target": "priya.nair@harborline.example",
+      "reason": "Hold the account disabled until she is reached by phone and the reset is done with her. Revoking sessions does not stop a fresh sign-in with a known password in the gap before the reset lands."
+    }
+  ],
+  "tuning_notes": [
+    "Add AuthenticationRequirement and ConditionalAccessStatus to the output. The analyst should not have to open a second query to learn whether the success was password-only."
+  ]
+}

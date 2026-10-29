@@ -1,0 +1,463 @@
+{
+  "schema_version": 1,
+  "case_id": "brute-force-then-success",
+  "recorded_at": "2026-10-29T04:01:52.788982Z",
+  "alert": {
+    "id": "brute-force-then-success",
+    "title": "Password guessing then a successful sign-in for the finance director",
+    "fired_at": "2026-10-27T13:20:00Z",
+    "detection": {
+      "name": "Brute force then success on one account",
+      "rule_id": "8e21a6b0-3c4d-4f19-91aa-7d2e5c8f3012",
+      "technique_id": "T1110.001",
+      "technique_name": "Password Guessing",
+      "tactic": "Credential Access",
+      "severity": "High",
+      "source_table": "SigninLogs"
+    },
+    "entities": {
+      "users": [
+        "priya.nair@harborline.example"
+      ],
+      "ips": [
+        "203.0.113.50"
+      ],
+      "apps": []
+    },
+    "detection_output": {
+      "UserPrincipalName": "priya.nair@harborline.example",
+      "FailCount": 9,
+      "FailIPs": [
+        "203.0.113.50"
+      ],
+      "FirstFail": "2026-10-27T13:00:00Z",
+      "LastFail": "2026-10-27T13:02:40Z",
+      "SuccessTime": "2026-10-27T13:03:10Z",
+      "SuccessIP": "203.0.113.50"
+    },
+    "evidence": [
+      {
+        "TimeGenerated": "2026-10-27T13:00:00Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:00:20Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:00:40Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:01:00Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:01:20Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:01:40Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:02:00Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:02:20Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:02:40Z",
+        "ResultType": "50126",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      },
+      {
+        "TimeGenerated": "2026-10-27T13:03:10Z",
+        "ResultType": "0",
+        "UserPrincipalName": "priya.nair@harborline.example",
+        "IPAddress": "203.0.113.50"
+      }
+    ]
+  },
+  "enrichment": {
+    "sources": [
+      "context/directory.json",
+      "context/ip-reputation.json",
+      "context/apps.json"
+    ],
+    "users": [
+      {
+        "upn": "priya.nair@harborline.example",
+        "found": true,
+        "display_name": "Priya Nair",
+        "title": "Finance Director",
+        "department": "Finance",
+        "is_admin": false,
+        "admin_roles": [],
+        "mfa_methods": [
+          "Microsoft Authenticator push"
+        ],
+        "usual_countries": [
+          "US",
+          "CA"
+        ],
+        "known_ips": [
+          "198.51.100.10",
+          "192.0.2.44"
+        ],
+        "notes": "Travels to Canada quarterly for a client site. 192.0.2.44 is her home ISP.",
+        "alert_ips_not_known_for_user": [
+          "203.0.113.50"
+        ],
+        "alert_countries_outside_usual": [
+          "RU"
+        ]
+      }
+    ],
+    "ips": [
+      {
+        "ip": "203.0.113.50",
+        "found": true,
+        "country": "RU",
+        "asn": "AS64530",
+        "owner": "Bulletproof hosting provider",
+        "reputation": "malicious",
+        "notes": "Known password-guessing source across many tenants in the last 30 days."
+      }
+    ],
+    "apps": []
+  },
+  "model_call": {
+    "model_requested": "claude-sonnet-5-5",
+    "model_served": "claude-sonnet-5-5",
+    "request_id": "req_011CgVrxJd6WC1yUwJdDhFC4",
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 3670,
+      "output_tokens": 2128
+    },
+    "system_prompt": "You are the first-pass triage analyst in the security operations team at Harborline Federal, a 60-person federal contractor that runs on Microsoft 365 and holds NIST SP 800-171 obligations for Controlled Unclassified Information (CUI).\n\nA detection has fired. You will receive the alert (the detection's metadata, its output row, and the raw log rows that fired it) and offline enrichment: directory records for the users involved, reputation records for the IPs, and catalog records for any applications. Your assessment goes to a human analyst who makes the final call. You do not act. Every action you recommend waits for a human to approve or reject it.\n\nHow to work:\n\n- Reason only from the alert and the enrichment. Do not assume facts that are not in front of you. When something matters and is missing, say so in `open_questions` instead of guessing.\n- Weigh the benign explanations honestly before settling on a verdict, and list the ones you considered. A wrong \"malicious\" call costs the analyst time; a wrong \"benign\" call can cost the company its CUI.\n- Treat enrichment that says \"not found\" as information. An account, IP, or application the organization has no record of is a fact worth stating.\n- Cite evidence by what it shows: timestamps, result codes, IPs, permissions, counts.\n- Recommend the smallest set of containment actions that would hold if the alert is real. Use `no_action` only when you judge the activity benign. Name the specific target of each action (a UPN, an IP, an application ID).\n- Map the activity to MITRE ATT&CK techniques you can support from the evidence. The detection's own technique is a starting point, not a requirement.\n- Detection tuning notes are for the detection engineer: what made this alert noisy or useful, and what would improve the rule.\n\nVerdicts:\n\n- `true_positive`: malicious or unauthorized activity.\n- `benign_true_positive`: the detection logic fired correctly, but the activity is authorized or explained.\n- `false_positive`: the detection fired on activity it should not have matched.\n- `needs_more_info`: the evidence does not support a call either way.\n\nConfidence is how sure you are of the verdict: `low`, `medium`, or `high`.\n\nAll people, domains, and IP addresses in this environment are fictional. Analyze them as if they were real.\n",
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "true_positive",
+            "benign_true_positive",
+            "false_positive",
+            "needs_more_info"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High",
+            "Critical"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "time",
+              "event"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "key_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "benign_explanations_considered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "disable_account",
+                  "revoke_sessions",
+                  "reset_password",
+                  "require_mfa_reregistration",
+                  "remove_oauth_grant",
+                  "block_ip",
+                  "notify_user",
+                  "no_action"
+                ]
+              },
+              "target": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "action",
+              "target",
+              "rationale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "attack_mapping": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "technique_id": {
+                "type": "string"
+              },
+              "technique_name": {
+                "type": "string"
+              },
+              "tactic": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "technique_id",
+              "technique_name",
+              "tactic"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "detection_tuning_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "verdict",
+        "confidence",
+        "severity",
+        "summary",
+        "timeline",
+        "key_evidence",
+        "benign_explanations_considered",
+        "recommended_actions",
+        "attack_mapping",
+        "detection_tuning_notes",
+        "open_questions"
+      ],
+      "additionalProperties": false
+    },
+    "user_message": "Triage this alert.\n\n<alert>\n{\n  \"detection\": {\n    \"name\": \"Brute force then success on one account\",\n    \"rule_id\": \"8e21a6b0-3c4d-4f19-91aa-7d2e5c8f3012\",\n    \"severity\": \"High\",\n    \"source_table\": \"SigninLogs\",\n    \"tactic\": \"Credential Access\",\n    \"technique_id\": \"T1110.001\",\n    \"technique_name\": \"Password Guessing\"\n  },\n  \"detection_output\": {\n    \"FailCount\": 9,\n    \"FailIPs\": [\n      \"203.0.113.50\"\n    ],\n    \"FirstFail\": \"2026-10-27T13:00:00Z\",\n    \"LastFail\": \"2026-10-27T13:02:40Z\",\n    \"SuccessIP\": \"203.0.113.50\",\n    \"SuccessTime\": \"2026-10-27T13:03:10Z\",\n    \"UserPrincipalName\": \"priya.nair@harborline.example\"\n  },\n  \"entities\": {\n    \"apps\": [],\n    \"ips\": [\n      \"203.0.113.50\"\n    ],\n    \"users\": [\n      \"priya.nair@harborline.example\"\n    ]\n  },\n  \"evidence\": [\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:00:00Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:00:20Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:00:40Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:01:00Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:01:20Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:01:40Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:02:00Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:02:20Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"50126\",\n      \"TimeGenerated\": \"2026-10-27T13:02:40Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.50\",\n      \"ResultType\": \"0\",\n      \"TimeGenerated\": \"2026-10-27T13:03:10Z\",\n      \"UserPrincipalName\": \"priya.nair@harborline.example\"\n    }\n  ],\n  \"fired_at\": \"2026-10-27T13:20:00Z\",\n  \"id\": \"brute-force-then-success\",\n  \"title\": \"Password guessing then a successful sign-in for the finance director\"\n}\n</alert>\n\n<enrichment>\n{\n  \"apps\": [],\n  \"ips\": [\n    {\n      \"asn\": \"AS64530\",\n      \"country\": \"RU\",\n      \"found\": true,\n      \"ip\": \"203.0.113.50\",\n      \"notes\": \"Known password-guessing source across many tenants in the last 30 days.\",\n      \"owner\": \"Bulletproof hosting provider\",\n      \"reputation\": \"malicious\"\n    }\n  ],\n  \"sources\": [\n    \"context/directory.json\",\n    \"context/ip-reputation.json\",\n    \"context/apps.json\"\n  ],\n  \"users\": [\n    {\n      \"admin_roles\": [],\n      \"alert_countries_outside_usual\": [\n        \"RU\"\n      ],\n      \"alert_ips_not_known_for_user\": [\n        \"203.0.113.50\"\n      ],\n      \"department\": \"Finance\",\n      \"display_name\": \"Priya Nair\",\n      \"found\": true,\n      \"is_admin\": false,\n      \"known_ips\": [\n        \"198.51.100.10\",\n        \"192.0.2.44\"\n      ],\n      \"mfa_methods\": [\n        \"Microsoft Authenticator push\"\n      ],\n      \"notes\": \"Travels to Canada quarterly for a client site. 192.0.2.44 is her home ISP.\",\n      \"title\": \"Finance Director\",\n      \"upn\": \"priya.nair@harborline.example\",\n      \"usual_countries\": [\n        \"US\",\n        \"CA\"\n      ]\n    }\n  ]\n}\n</enrichment>",
+    "raw_output": "{\"verdict\":\"true_positive\",\"confidence\":\"high\",\"severity\":\"Critical\",\"summary\":\"Nine consecutive failed sign-ins (50126, invalid username or password) for Priya Nair, the Finance Director, came from 203.0.113.50 at 20-second intervals between 13:00:00Z and 13:02:40Z. A successful sign-in (ResultType 0) from the same IP followed at 13:03:10Z. The IP is a bulletproof hosting provider in Russia (AS64530) that enrichment marks malicious and a known password-guessing source across many tenants. It is not in her known IPs, and RU is outside her usual countries (US, CA). The regular cadence points to automated guessing, and the success right after the failures means the password was very likely guessed. Her only MFA method is Authenticator push, and the alert does not show whether MFA was challenged or satisfied on the success, so it is unclear whether the attacker holds a full session or only the password. She is a finance director at a CUI-holding contractor, so the account should be treated as compromised until shown otherwise.\",\"timeline\":[{\"time\":\"2026-10-27T13:00:00Z\",\"event\":\"First failed sign-in (50126) for priya.nair from 203.0.113.50\"},{\"time\":\"2026-10-27T13:00:20Z - 13:02:40Z\",\"event\":\"Seven more failures at a steady 20-second cadence, nine in total, all from the same IP\"},{\"time\":\"2026-10-27T13:03:10Z\",\"event\":\"Successful sign-in (ResultType 0) from 203.0.113.50, 30 seconds after the last failure\"},{\"time\":\"2026-10-27T13:20:00Z\",\"event\":\"Detection fired, 17 minutes after the successful sign-in\"}],\"key_evidence\":[\"9 failures with ResultType 50126 from 203.0.113.50 between 13:00:00Z and 13:02:40Z, spaced exactly 20 seconds apart, which indicates scripted guessing\",\"ResultType 0 from the same IP at 13:03:10Z, 30 seconds after the last failure\",\"IP reputation is malicious: bulletproof hosting provider (AS64530), country RU, known password-guessing source across many tenants in the last 30 days\",\"203.0.113.50 is not among the user's known IPs (198.51.100.10, 192.0.2.44), and RU is outside her usual countries (US, CA)\",\"The user's notes mention only quarterly travel to Canada, which does not explain a Russian source\",\"Target is the Finance Director with a single MFA method (Microsoft Authenticator push), which raises the value of the account and exposes it to MFA fatigue or token abuse if MFA was prompted\",\"No application entities are present, so the alert does not show what the successful session accessed\"],\"benign_explanations_considered\":[\"Legitimate user mistyping her password: ruled out by the 9 failures at machine-regular 20-second intervals from a malicious-reputation IP that she has never used\",\"User traveling or using a VPN: her documented travel is to Canada, and the source is a bulletproof hosting provider in RU, not a commercial VPN or her usual countries\",\"Security testing or an authorized red team: nothing in the alert or enrichment indicates an authorized test, though that is unconfirmed with the security team\",\"Misconfigured service or script with a stale password: it would not come from a known malicious guessing source and would not be tied to a user who has never signed in from this IP\",\"Success being a different actor: the success comes from the same IP 30 seconds after the failures, so it is almost certainly the same actor\"],\"recommended_actions\":[{\"action\":\"revoke_sessions\",\"target\":\"priya.nair@harborline.example\",\"rationale\":\"Invalidates any refresh or session tokens the attacker obtained from the 13:03:10Z successful sign-in.\"},{\"action\":\"reset_password\",\"target\":\"priya.nair@harborline.example\",\"rationale\":\"The password was almost certainly guessed and must be considered known to the attacker.\"},{\"action\":\"block_ip\",\"target\":\"203.0.113.50\",\"rationale\":\"A malicious-reputation password-guessing source should be blocked at the tenant, for example in a Conditional Access named location, to prevent further attempts.\"},{\"action\":\"require_mfa_reregistration\",\"target\":\"priya.nair@harborline.example\",\"rationale\":\"If the attacker satisfied or manipulated an MFA prompt, or registered their own method, the existing registration cannot be trusted. Do this after reviewing the MFA events for the account.\"},{\"action\":\"notify_user\",\"target\":\"priya.nair@harborline.example\",\"rationale\":\"Contact her out of band to confirm she did not sign in at 13:03Z, to ask whether she approved any unexpected Authenticator prompts, and to inform her of the reset.\"}],\"attack_mapping\":[{\"technique_id\":\"T1110.001\",\"technique_name\":\"Brute Force: Password Guessing\",\"tactic\":\"Credential Access\"},{\"technique_id\":\"T1078.004\",\"technique_name\":\"Valid Accounts: Cloud Accounts\",\"tactic\":\"Initial Access\"}],\"detection_tuning_notes\":[\"The rule worked well: a short failure burst followed by a success from the same IP, combined with IP reputation and user-context enrichment, gave a clear signal\",\"Consider raising severity automatically when the success IP has a malicious reputation or is outside the user's known IPs and countries\",\"Add MFA outcome fields (for example AuthenticationRequirement and ConditionalAccessStatus) to the output so triage can tell whether the success was password-only or MFA-satisfied\",\"Add a query for post-success activity (mailbox rules, OAuth grants, MFA method changes, file access) to speed up scoping\",\"A single-account burst from one IP may miss low-and-slow spraying; consider a companion rule for one IP failing across many accounts\"],\"open_questions\":[\"Was MFA challenged on the 13:03:10Z sign-in, and if so was it completed, and by what method?\",\"Did the user receive unexpected Authenticator push prompts around 13:03Z?\",\"What did the session do after 13:03:10Z (mailbox access, inbox rules, file downloads from SharePoint/OneDrive, OAuth consent, MFA method registration)?\",\"Did 203.0.113.50 attempt sign-ins against other Harborline accounts?\",\"Was the account's password reused elsewhere or exposed in a known breach?\",\"Did the sign-in reach any CUI repositories or finance systems?\"]}"
+  },
+  "assessment": {
+    "verdict": "true_positive",
+    "confidence": "high",
+    "severity": "Critical",
+    "summary": "Nine consecutive failed sign-ins (50126, invalid username or password) for Priya Nair, the Finance Director, came from 203.0.113.50 at 20-second intervals between 13:00:00Z and 13:02:40Z. A successful sign-in (ResultType 0) from the same IP followed at 13:03:10Z. The IP is a bulletproof hosting provider in Russia (AS64530) that enrichment marks malicious and a known password-guessing source across many tenants. It is not in her known IPs, and RU is outside her usual countries (US, CA). The regular cadence points to automated guessing, and the success right after the failures means the password was very likely guessed. Her only MFA method is Authenticator push, and the alert does not show whether MFA was challenged or satisfied on the success, so it is unclear whether the attacker holds a full session or only the password. She is a finance director at a CUI-holding contractor, so the account should be treated as compromised until shown otherwise.",
+    "timeline": [
+      {
+        "time": "2026-10-27T13:00:00Z",
+        "event": "First failed sign-in (50126) for priya.nair from 203.0.113.50"
+      },
+      {
+        "time": "2026-10-27T13:00:20Z - 13:02:40Z",
+        "event": "Seven more failures at a steady 20-second cadence, nine in total, all from the same IP"
+      },
+      {
+        "time": "2026-10-27T13:03:10Z",
+        "event": "Successful sign-in (ResultType 0) from 203.0.113.50, 30 seconds after the last failure"
+      },
+      {
+        "time": "2026-10-27T13:20:00Z",
+        "event": "Detection fired, 17 minutes after the successful sign-in"
+      }
+    ],
+    "key_evidence": [
+      "9 failures with ResultType 50126 from 203.0.113.50 between 13:00:00Z and 13:02:40Z, spaced exactly 20 seconds apart, which indicates scripted guessing",
+      "ResultType 0 from the same IP at 13:03:10Z, 30 seconds after the last failure",
+      "IP reputation is malicious: bulletproof hosting provider (AS64530), country RU, known password-guessing source across many tenants in the last 30 days",
+      "203.0.113.50 is not among the user's known IPs (198.51.100.10, 192.0.2.44), and RU is outside her usual countries (US, CA)",
+      "The user's notes mention only quarterly travel to Canada, which does not explain a Russian source",
+      "Target is the Finance Director with a single MFA method (Microsoft Authenticator push), which raises the value of the account and exposes it to MFA fatigue or token abuse if MFA was prompted",
+      "No application entities are present, so the alert does not show what the successful session accessed"
+    ],
+    "benign_explanations_considered": [
+      "Legitimate user mistyping her password: ruled out by the 9 failures at machine-regular 20-second intervals from a malicious-reputation IP that she has never used",
+      "User traveling or using a VPN: her documented travel is to Canada, and the source is a bulletproof hosting provider in RU, not a commercial VPN or her usual countries",
+      "Security testing or an authorized red team: nothing in the alert or enrichment indicates an authorized test, though that is unconfirmed with the security team",
+      "Misconfigured service or script with a stale password: it would not come from a known malicious guessing source and would not be tied to a user who has never signed in from this IP",
+      "Success being a different actor: the success comes from the same IP 30 seconds after the failures, so it is almost certainly the same actor"
+    ],
+    "recommended_actions": [
+      {
+        "action": "revoke_sessions",
+        "target": "priya.nair@harborline.example",
+        "rationale": "Invalidates any refresh or session tokens the attacker obtained from the 13:03:10Z successful sign-in."
+      },
+      {
+        "action": "reset_password",
+        "target": "priya.nair@harborline.example",
+        "rationale": "The password was almost certainly guessed and must be considered known to the attacker."
+      },
+      {
+        "action": "block_ip",
+        "target": "203.0.113.50",
+        "rationale": "A malicious-reputation password-guessing source should be blocked at the tenant, for example in a Conditional Access named location, to prevent further attempts."
+      },
+      {
+        "action": "require_mfa_reregistration",
+        "target": "priya.nair@harborline.example",
+        "rationale": "If the attacker satisfied or manipulated an MFA prompt, or registered their own method, the existing registration cannot be trusted. Do this after reviewing the MFA events for the account."
+      },
+      {
+        "action": "notify_user",
+        "target": "priya.nair@harborline.example",
+        "rationale": "Contact her out of band to confirm she did not sign in at 13:03Z, to ask whether she approved any unexpected Authenticator prompts, and to inform her of the reset."
+      }
+    ],
+    "attack_mapping": [
+      {
+        "technique_id": "T1110.001",
+        "technique_name": "Brute Force: Password Guessing",
+        "tactic": "Credential Access"
+      },
+      {
+        "technique_id": "T1078.004",
+        "technique_name": "Valid Accounts: Cloud Accounts",
+        "tactic": "Initial Access"
+      }
+    ],
+    "detection_tuning_notes": [
+      "The rule worked well: a short failure burst followed by a success from the same IP, combined with IP reputation and user-context enrichment, gave a clear signal",
+      "Consider raising severity automatically when the success IP has a malicious reputation or is outside the user's known IPs and countries",
+      "Add MFA outcome fields (for example AuthenticationRequirement and ConditionalAccessStatus) to the output so triage can tell whether the success was password-only or MFA-satisfied",
+      "Add a query for post-success activity (mailbox rules, OAuth grants, MFA method changes, file access) to speed up scoping",
+      "A single-account burst from one IP may miss low-and-slow spraying; consider a companion rule for one IP failing across many accounts"
+    ],
+    "open_questions": [
+      "Was MFA challenged on the 13:03:10Z sign-in, and if so was it completed, and by what method?",
+      "Did the user receive unexpected Authenticator push prompts around 13:03Z?",
+      "What did the session do after 13:03:10Z (mailbox access, inbox rules, file downloads from SharePoint/OneDrive, OAuth consent, MFA method registration)?",
+      "Did 203.0.113.50 attempt sign-ins against other Harborline accounts?",
+      "Was the account's password reused elsewhere or exposed in a known breach?",
+      "Did the sign-in reach any CUI repositories or finance systems?"
+    ]
+  },
+  "decision": {
+    "analyst": "Edward Griggs",
+    "decided_at": "2026-10-29T04:03:16.926668Z",
+    "verdict": "true_positive",
+    "severity": "Critical",
+    "rationale": "Agree with the AI, including Critical. Nine wrong passwords at machine cadence from a bulletproof host with a malicious reputation, then a success from the same IP 30 seconds later: the password was guessed. The open question is MFA. The success row does not say whether push was satisfied, so assume the attacker has a session. She is the finance director at a CUI contractor, which makes her mailbox a payment-fraud target as well as a data target.",
+    "actions": [
+      {
+        "action": "revoke_sessions",
+        "target": "priya.nair@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Kill whatever session the 13:03:10Z sign-in produced.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "reset_password",
+        "target": "priya.nair@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "The password was guessed.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "block_ip",
+        "target": "203.0.113.50",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Hosting provider with a malicious reputation, not residential space. No business traffic will come from it, so the block has no collateral.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "require_mfa_reregistration",
+        "target": "priya.nair@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Until the sign-in logs show how MFA was satisfied, her registered methods cannot be trusted.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "notify_user",
+        "target": "priya.nair@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Confirm by phone, not email, since the mailbox may be in the attacker's hands.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "disable_account",
+        "target": "priya.nair@harborline.example",
+        "source": "analyst",
+        "status": "approved",
+        "reason": "Hold the account disabled until she is reached by phone and the reset is done with her. Revoking sessions does not stop a fresh sign-in with a known password in the gap before the reset lands.",
+        "approver": "Edward Griggs"
+      }
+    ],
+    "tuning_notes": [
+      "Add AuthenticationRequirement and ConditionalAccessStatus to the output. The analyst should not have to open a second query to learn whether the success was password-only."
+    ]
+  }
+}
