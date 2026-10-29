@@ -1,0 +1,29 @@
+{
+  "id": "sample-mfa-burst",
+  "title": "Sample: MFA prompts in a short burst",
+  "fired_at": "2026-08-01T17:10:00Z",
+  "detection": {
+    "name": "MFA fatigue burst",
+    "rule_id": "9a3e1c70-5d2b-4e18-af44-1c6b8d0e3925",
+    "technique_id": "T1621",
+    "technique_name": "Multi-Factor Authentication Request Generation",
+    "tactic": "Credential Access",
+    "severity": "High",
+    "source_table": "SigninLogs"
+  },
+  "entities": {
+    "users": ["ada.marsh@harborline.example"],
+    "ips": ["203.0.113.7"],
+    "apps": []
+  },
+  "detection_output": {
+    "UserPrincipalName": "ada.marsh@harborline.example",
+    "PromptEvents": 2,
+    "IPs": ["203.0.113.7"],
+    "Codes": ["50074"]
+  },
+  "evidence": [
+    {"TimeGenerated": "2026-08-01T17:00:00Z", "ResultType": "50074", "UserPrincipalName": "ada.marsh@harborline.example", "IPAddress": "203.0.113.7"},
+    {"TimeGenerated": "2026-08-01T17:00:20Z", "ResultType": "50074", "UserPrincipalName": "ada.marsh@harborline.example", "IPAddress": "203.0.113.7"}
+  ]
+}
