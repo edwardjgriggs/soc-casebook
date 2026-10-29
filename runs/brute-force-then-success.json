@@ -402,7 +402,7 @@
   },
   "decision": {
     "analyst": "Edward Griggs",
-    "decided_at": "2026-10-29T04:03:16.926668Z",
+    "decided_at": "2026-10-29T13:34:55.928951Z",
     "verdict": "true_positive",
     "severity": "Critical",
     "rationale": "Agree with the AI, including Critical. Nine wrong passwords at machine cadence from a bulletproof host with a malicious reputation, then a success from the same IP 30 seconds later: the password was guessed. The open question is MFA. The success row does not say whether push was satisfied, so assume the attacker has a session. She is the finance director at a CUI contractor, which makes her mailbox a payment-fraud target as well as a data target.",

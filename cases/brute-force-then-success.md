@@ -23,7 +23,7 @@ Nine consecutive failed sign-ins (50126, invalid username or password) for Priya
 | 2026-10-27T13:20:00Z | Detection fired, 17 minutes after the successful sign-in | AI, from evidence |
 | 2026-10-27T13:20:00Z | Detection fired: Brute force then success on one account | SIEM |
 | 2026-10-29T04:01:52Z | AI assessment recorded (claude-sonnet-5-5) | casebook |
-| 2026-10-29T04:03:16Z | Decision by Edward Griggs: True positive | analyst |
+| 2026-10-29T13:34:55Z | Decision by Edward Griggs: True positive | analyst |
 
 ## 3. Evidence
 
@@ -209,7 +209,7 @@ Model: `claude-sonnet-5-5`. Verdict **True positive**, confidence **high**, seve
 ## 5. Human decision and rationale
 
 **Analyst:** Edward Griggs  
-**Decided:** 2026-10-29T04:03:16Z  
+**Decided:** 2026-10-29T13:34:55Z  
 **Verdict:** True positive (Critical)
 
 Agree with the AI, including Critical. Nine wrong passwords at machine cadence from a bulletproof host with a malicious reputation, then a success from the same IP 30 seconds later: the password was guessed. The open question is MFA. The success row does not say whether push was satisfied, so assume the attacker has a session. She is the finance director at a CUI contractor, which makes her mailbox a payment-fraud target as well as a data target.

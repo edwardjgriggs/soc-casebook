@@ -436,7 +436,7 @@
   },
   "decision": {
     "analyst": "Edward Griggs",
-    "decided_at": "2026-10-29T04:03:16.594079Z",
+    "decided_at": "2026-10-29T13:34:55.577641Z",
     "verdict": "true_positive",
     "severity": "High",
     "rationale": "Agree with the AI. Ten MFA-required results in three minutes from a residential proxy exit Ada has never used, at a fixed 20-second cadence, is scripted prompt bombing, not a user fighting a stale client. Results 50074 and 50076 only appear after the password is accepted, so the password is burned even though no prompt was approved in the window. Contain the account, not the IP.",

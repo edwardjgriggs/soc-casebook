@@ -21,7 +21,7 @@ Ada Marsh (Contracts Manager, non-admin, handles CUI-marked proposal material) c
 | 2026-10-27T18:15:00Z | High-privilege OAuth consent detection fired. | AI, from evidence |
 | 2026-10-27T18:15:00Z | Detection fired: High-privilege OAuth consent | SIEM |
 | 2026-10-29T04:02:14Z | AI assessment recorded (claude-sonnet-5-5) | casebook |
-| 2026-10-29T04:03:17Z | Decision by Edward Griggs: True positive | analyst |
+| 2026-10-29T13:34:56Z | Decision by Edward Griggs: True positive | analyst |
 
 ## 3. Evidence
 
@@ -182,7 +182,7 @@ Model: `claude-sonnet-5-5`. Verdict **Needs more info**, confidence **low**, sev
 ## 5. Human decision and rationale
 
 **Analyst:** Edward Griggs  
-**Decided:** 2026-10-29T04:03:17Z  
+**Decided:** 2026-10-29T13:34:56Z  
 **Verdict:** True positive (Critical)
 
 Override. The AI stopped at needs_more_info because it could not prove the app was illegitimate. The app catalog settles it. Harborline's real e-signature vendor is Northwind eSign, app 4c1e7a52-0b9d-4f3e-8a61-2d5f9e0b7c13, verified publisher, admin-consented by IT, approved for User.Read and Files.Read only. The consented app has a different app ID, a name built to look like the sanctioned one, and asks for Mail.ReadWrite plus offline_access through user consent. A real Northwind add-in would not need Ada to consent at all, and would not need to write to her mailbox. That is an illicit consent grant: a refresh token with read and write on a CUI-handling mailbox that survives a password reset. Waiting for more information leaves that token live.

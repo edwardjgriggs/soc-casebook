@@ -24,7 +24,7 @@ Ten MFA-interrupted sign-in attempts for Ada Marsh (Contracts Manager, handles C
 | 2026-10-27T17:10:00Z | Detection fired. Activity after 17:03Z is not included in the evidence. | AI, from evidence |
 | 2026-10-27T17:10:00Z | Detection fired: MFA fatigue burst | SIEM |
 | 2026-10-29T04:01:33Z | AI assessment recorded (claude-sonnet-5-5) | casebook |
-| 2026-10-29T04:03:16Z | Decision by Edward Griggs: True positive | analyst |
+| 2026-10-29T13:34:55Z | Decision by Edward Griggs: True positive | analyst |
 
 ## 3. Evidence
 
@@ -210,7 +210,7 @@ Model: `claude-sonnet-5-5`. Verdict **True positive**, confidence **high**, seve
 ## 5. Human decision and rationale
 
 **Analyst:** Edward Griggs  
-**Decided:** 2026-10-29T04:03:16Z  
+**Decided:** 2026-10-29T13:34:55Z  
 **Verdict:** True positive (High)
 
 Agree with the AI. Ten MFA-required results in three minutes from a residential proxy exit Ada has never used, at a fixed 20-second cadence, is scripted prompt bombing, not a user fighting a stale client. Results 50074 and 50076 only appear after the password is accepted, so the password is burned even though no prompt was approved in the window. Contain the account, not the IP.
