@@ -1,0 +1,54 @@
+{
+  "organization": "Harborline Federal",
+  "domain": "harborline.example",
+  "users": [
+    {
+      "upn": "ada.marsh@harborline.example",
+      "display_name": "Ada Marsh",
+      "title": "Contracts Manager",
+      "department": "Contracts",
+      "is_admin": false,
+      "admin_roles": [],
+      "mfa_methods": ["Microsoft Authenticator push"],
+      "usual_countries": ["US"],
+      "known_ips": ["198.51.100.10", "198.51.100.24"],
+      "notes": "Handles subcontractor agreements and CUI-marked proposal material. Works hybrid from Virginia."
+    },
+    {
+      "upn": "jordan.okafor@harborline.example",
+      "display_name": "Jordan Okafor",
+      "title": "Program Analyst",
+      "department": "Programs",
+      "is_admin": false,
+      "admin_roles": [],
+      "mfa_methods": ["Microsoft Authenticator push", "SMS"],
+      "usual_countries": ["US"],
+      "known_ips": ["198.51.100.10"],
+      "notes": "Office-based. SMS still registered as a fallback method."
+    },
+    {
+      "upn": "sam.whitfield@harborline.example",
+      "display_name": "Sam Whitfield",
+      "title": "IT Administrator",
+      "department": "IT",
+      "is_admin": true,
+      "admin_roles": ["Global Administrator", "Exchange Administrator"],
+      "mfa_methods": ["FIDO2 security key"],
+      "usual_countries": ["US"],
+      "known_ips": ["198.51.100.10", "198.51.100.24"],
+      "notes": "Sole full-time IT staff. Approves enterprise application consent requests."
+    },
+    {
+      "upn": "priya.nair@harborline.example",
+      "display_name": "Priya Nair",
+      "title": "Finance Director",
+      "department": "Finance",
+      "is_admin": false,
+      "admin_roles": [],
+      "mfa_methods": ["Microsoft Authenticator push"],
+      "usual_countries": ["US", "CA"],
+      "known_ips": ["198.51.100.10", "192.0.2.44"],
+      "notes": "Travels to Canada quarterly for a client site. 192.0.2.44 is her home ISP."
+    }
+  ]
+}

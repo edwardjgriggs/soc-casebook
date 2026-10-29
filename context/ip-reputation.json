@@ -1,0 +1,44 @@
+{
+  "records": [
+    {
+      "ip": "198.51.100.10",
+      "country": "US",
+      "asn": "AS64500",
+      "owner": "Harborline Federal office egress",
+      "reputation": "benign",
+      "notes": "Corporate office NAT in Virginia."
+    },
+    {
+      "ip": "198.51.100.24",
+      "country": "US",
+      "asn": "AS64500",
+      "owner": "Harborline Federal VPN",
+      "reputation": "benign",
+      "notes": "Always-on VPN concentrator for remote staff."
+    },
+    {
+      "ip": "192.0.2.44",
+      "country": "US",
+      "asn": "AS64510",
+      "owner": "Residential ISP",
+      "reputation": "benign",
+      "notes": "Home connection for a known employee."
+    },
+    {
+      "ip": "203.0.113.7",
+      "country": "NL",
+      "asn": "AS64520",
+      "owner": "Residential proxy network",
+      "reputation": "suspicious",
+      "notes": "Rotating residential proxy exit. Seen in other tenants' MFA-prompt bombing reports."
+    },
+    {
+      "ip": "203.0.113.50",
+      "country": "RU",
+      "asn": "AS64530",
+      "owner": "Bulletproof hosting provider",
+      "reputation": "malicious",
+      "notes": "Known password-guessing source across many tenants in the last 30 days."
+    }
+  ]
+}
