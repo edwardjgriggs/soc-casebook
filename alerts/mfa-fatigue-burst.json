@@ -1,0 +1,127 @@
+{
+  "id": "mfa-fatigue-burst",
+  "title": "MFA prompt burst against a contracts manager",
+  "fired_at": "2026-10-27T17:10:00Z",
+  "detection": {
+    "name": "MFA fatigue burst",
+    "rule_id": "9a3e1c70-5d2b-4e18-af44-1c6b8d0e3925",
+    "technique_id": "T1621",
+    "technique_name": "Multi-Factor Authentication Request Generation",
+    "tactic": "Credential Access",
+    "severity": "High",
+    "source_table": "SigninLogs"
+  },
+  "entities": {
+    "users": [
+      "ada.marsh@harborline.example"
+    ],
+    "ips": [
+      "203.0.113.7"
+    ],
+    "apps": []
+  },
+  "detection_output": {
+    "TimeGenerated": "2026-10-27T17:00:00Z",
+    "UserPrincipalName": "ada.marsh@harborline.example",
+    "PromptEvents": 10,
+    "IPs": [
+      "203.0.113.7"
+    ],
+    "Codes": [
+      "50074",
+      "50076"
+    ]
+  },
+  "evidence": [
+    {
+      "TimeGenerated": "2026-10-27T17:00:00Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:00:20Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:00:40Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:01:00Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:01:20Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:01:40Z",
+      "ResultType": "50074",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50074
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:02:00Z",
+      "ResultType": "50076",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50076
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:02:20Z",
+      "ResultType": "50076",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50076
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:02:40Z",
+      "ResultType": "50076",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50076
+      }
+    },
+    {
+      "TimeGenerated": "2026-10-27T17:03:00Z",
+      "ResultType": "50076",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "IPAddress": "203.0.113.7",
+      "Status": {
+        "errorCode": 50076
+      }
+    }
+  ]
+}

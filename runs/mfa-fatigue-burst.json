@@ -1,0 +1,481 @@
+{
+  "schema_version": 1,
+  "case_id": "mfa-fatigue-burst",
+  "recorded_at": "2026-10-29T04:01:33.187496Z",
+  "alert": {
+    "id": "mfa-fatigue-burst",
+    "title": "MFA prompt burst against a contracts manager",
+    "fired_at": "2026-10-27T17:10:00Z",
+    "detection": {
+      "name": "MFA fatigue burst",
+      "rule_id": "9a3e1c70-5d2b-4e18-af44-1c6b8d0e3925",
+      "technique_id": "T1621",
+      "technique_name": "Multi-Factor Authentication Request Generation",
+      "tactic": "Credential Access",
+      "severity": "High",
+      "source_table": "SigninLogs"
+    },
+    "entities": {
+      "users": [
+        "ada.marsh@harborline.example"
+      ],
+      "ips": [
+        "203.0.113.7"
+      ],
+      "apps": []
+    },
+    "detection_output": {
+      "TimeGenerated": "2026-10-27T17:00:00Z",
+      "UserPrincipalName": "ada.marsh@harborline.example",
+      "PromptEvents": 10,
+      "IPs": [
+        "203.0.113.7"
+      ],
+      "Codes": [
+        "50074",
+        "50076"
+      ]
+    },
+    "evidence": [
+      {
+        "TimeGenerated": "2026-10-27T17:00:00Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:00:20Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:00:40Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:01:00Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:01:20Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:01:40Z",
+        "ResultType": "50074",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50074
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:02:00Z",
+        "ResultType": "50076",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50076
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:02:20Z",
+        "ResultType": "50076",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50076
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:02:40Z",
+        "ResultType": "50076",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50076
+        }
+      },
+      {
+        "TimeGenerated": "2026-10-27T17:03:00Z",
+        "ResultType": "50076",
+        "UserPrincipalName": "ada.marsh@harborline.example",
+        "IPAddress": "203.0.113.7",
+        "Status": {
+          "errorCode": 50076
+        }
+      }
+    ]
+  },
+  "enrichment": {
+    "sources": [
+      "context/directory.json",
+      "context/ip-reputation.json",
+      "context/apps.json"
+    ],
+    "users": [
+      {
+        "upn": "ada.marsh@harborline.example",
+        "found": true,
+        "display_name": "Ada Marsh",
+        "title": "Contracts Manager",
+        "department": "Contracts",
+        "is_admin": false,
+        "admin_roles": [],
+        "mfa_methods": [
+          "Microsoft Authenticator push"
+        ],
+        "usual_countries": [
+          "US"
+        ],
+        "known_ips": [
+          "198.51.100.10",
+          "198.51.100.24"
+        ],
+        "notes": "Handles subcontractor agreements and CUI-marked proposal material. Works hybrid from Virginia.",
+        "alert_ips_not_known_for_user": [
+          "203.0.113.7"
+        ],
+        "alert_countries_outside_usual": [
+          "NL"
+        ]
+      }
+    ],
+    "ips": [
+      {
+        "ip": "203.0.113.7",
+        "found": true,
+        "country": "NL",
+        "asn": "AS64520",
+        "owner": "Residential proxy network",
+        "reputation": "suspicious",
+        "notes": "Rotating residential proxy exit. Seen in other tenants' MFA-prompt bombing reports."
+      }
+    ],
+    "apps": []
+  },
+  "model_call": {
+    "model_requested": "claude-sonnet-5-5",
+    "model_served": "claude-sonnet-5-5",
+    "request_id": "req_011CgVruGSYA4ZPzfmRmKguS",
+    "stop_reason": "end_turn",
+    "usage": {
+      "input_tokens": 3869,
+      "output_tokens": 3534
+    },
+    "system_prompt": "You are the first-pass triage analyst in the security operations team at Harborline Federal, a 60-person federal contractor that runs on Microsoft 365 and holds NIST SP 800-171 obligations for Controlled Unclassified Information (CUI).\n\nA detection has fired. You will receive the alert (the detection's metadata, its output row, and the raw log rows that fired it) and offline enrichment: directory records for the users involved, reputation records for the IPs, and catalog records for any applications. Your assessment goes to a human analyst who makes the final call. You do not act. Every action you recommend waits for a human to approve or reject it.\n\nHow to work:\n\n- Reason only from the alert and the enrichment. Do not assume facts that are not in front of you. When something matters and is missing, say so in `open_questions` instead of guessing.\n- Weigh the benign explanations honestly before settling on a verdict, and list the ones you considered. A wrong \"malicious\" call costs the analyst time; a wrong \"benign\" call can cost the company its CUI.\n- Treat enrichment that says \"not found\" as information. An account, IP, or application the organization has no record of is a fact worth stating.\n- Cite evidence by what it shows: timestamps, result codes, IPs, permissions, counts.\n- Recommend the smallest set of containment actions that would hold if the alert is real. Use `no_action` only when you judge the activity benign. Name the specific target of each action (a UPN, an IP, an application ID).\n- Map the activity to MITRE ATT&CK techniques you can support from the evidence. The detection's own technique is a starting point, not a requirement.\n- Detection tuning notes are for the detection engineer: what made this alert noisy or useful, and what would improve the rule.\n\nVerdicts:\n\n- `true_positive`: malicious or unauthorized activity.\n- `benign_true_positive`: the detection logic fired correctly, but the activity is authorized or explained.\n- `false_positive`: the detection fired on activity it should not have matched.\n- `needs_more_info`: the evidence does not support a call either way.\n\nConfidence is how sure you are of the verdict: `low`, `medium`, or `high`.\n\nAll people, domains, and IP addresses in this environment are fictional. Analyze them as if they were real.\n",
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "verdict": {
+          "type": "string",
+          "enum": [
+            "true_positive",
+            "benign_true_positive",
+            "false_positive",
+            "needs_more_info"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "severity": {
+          "type": "string",
+          "enum": [
+            "Low",
+            "Medium",
+            "High",
+            "Critical"
+          ]
+        },
+        "summary": {
+          "type": "string"
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string"
+              },
+              "event": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "time",
+              "event"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "key_evidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "benign_explanations_considered": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommended_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "action": {
+                "type": "string",
+                "enum": [
+                  "disable_account",
+                  "revoke_sessions",
+                  "reset_password",
+                  "require_mfa_reregistration",
+                  "remove_oauth_grant",
+                  "block_ip",
+                  "notify_user",
+                  "no_action"
+                ]
+              },
+              "target": {
+                "type": "string"
+              },
+              "rationale": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "action",
+              "target",
+              "rationale"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "attack_mapping": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "technique_id": {
+                "type": "string"
+              },
+              "technique_name": {
+                "type": "string"
+              },
+              "tactic": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "technique_id",
+              "technique_name",
+              "tactic"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "detection_tuning_notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "open_questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "verdict",
+        "confidence",
+        "severity",
+        "summary",
+        "timeline",
+        "key_evidence",
+        "benign_explanations_considered",
+        "recommended_actions",
+        "attack_mapping",
+        "detection_tuning_notes",
+        "open_questions"
+      ],
+      "additionalProperties": false
+    },
+    "user_message": "Triage this alert.\n\n<alert>\n{\n  \"detection\": {\n    \"name\": \"MFA fatigue burst\",\n    \"rule_id\": \"9a3e1c70-5d2b-4e18-af44-1c6b8d0e3925\",\n    \"severity\": \"High\",\n    \"source_table\": \"SigninLogs\",\n    \"tactic\": \"Credential Access\",\n    \"technique_id\": \"T1621\",\n    \"technique_name\": \"Multi-Factor Authentication Request Generation\"\n  },\n  \"detection_output\": {\n    \"Codes\": [\n      \"50074\",\n      \"50076\"\n    ],\n    \"IPs\": [\n      \"203.0.113.7\"\n    ],\n    \"PromptEvents\": 10,\n    \"TimeGenerated\": \"2026-10-27T17:00:00Z\",\n    \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n  },\n  \"entities\": {\n    \"apps\": [],\n    \"ips\": [\n      \"203.0.113.7\"\n    ],\n    \"users\": [\n      \"ada.marsh@harborline.example\"\n    ]\n  },\n  \"evidence\": [\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:00:00Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:00:20Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:00:40Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:01:00Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:01:20Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50074\",\n      \"Status\": {\n        \"errorCode\": 50074\n      },\n      \"TimeGenerated\": \"2026-10-27T17:01:40Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50076\",\n      \"Status\": {\n        \"errorCode\": 50076\n      },\n      \"TimeGenerated\": \"2026-10-27T17:02:00Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50076\",\n      \"Status\": {\n        \"errorCode\": 50076\n      },\n      \"TimeGenerated\": \"2026-10-27T17:02:20Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50076\",\n      \"Status\": {\n        \"errorCode\": 50076\n      },\n      \"TimeGenerated\": \"2026-10-27T17:02:40Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    },\n    {\n      \"IPAddress\": \"203.0.113.7\",\n      \"ResultType\": \"50076\",\n      \"Status\": {\n        \"errorCode\": 50076\n      },\n      \"TimeGenerated\": \"2026-10-27T17:03:00Z\",\n      \"UserPrincipalName\": \"ada.marsh@harborline.example\"\n    }\n  ],\n  \"fired_at\": \"2026-10-27T17:10:00Z\",\n  \"id\": \"mfa-fatigue-burst\",\n  \"title\": \"MFA prompt burst against a contracts manager\"\n}\n</alert>\n\n<enrichment>\n{\n  \"apps\": [],\n  \"ips\": [\n    {\n      \"asn\": \"AS64520\",\n      \"country\": \"NL\",\n      \"found\": true,\n      \"ip\": \"203.0.113.7\",\n      \"notes\": \"Rotating residential proxy exit. Seen in other tenants' MFA-prompt bombing reports.\",\n      \"owner\": \"Residential proxy network\",\n      \"reputation\": \"suspicious\"\n    }\n  ],\n  \"sources\": [\n    \"context/directory.json\",\n    \"context/ip-reputation.json\",\n    \"context/apps.json\"\n  ],\n  \"users\": [\n    {\n      \"admin_roles\": [],\n      \"alert_countries_outside_usual\": [\n        \"NL\"\n      ],\n      \"alert_ips_not_known_for_user\": [\n        \"203.0.113.7\"\n      ],\n      \"department\": \"Contracts\",\n      \"display_name\": \"Ada Marsh\",\n      \"found\": true,\n      \"is_admin\": false,\n      \"known_ips\": [\n        \"198.51.100.10\",\n        \"198.51.100.24\"\n      ],\n      \"mfa_methods\": [\n        \"Microsoft Authenticator push\"\n      ],\n      \"notes\": \"Handles subcontractor agreements and CUI-marked proposal material. Works hybrid from Virginia.\",\n      \"title\": \"Contracts Manager\",\n      \"upn\": \"ada.marsh@harborline.example\",\n      \"usual_countries\": [\n        \"US\"\n      ]\n    }\n  ]\n}\n</enrichment>",
+    "raw_output": "{\"verdict\":\"true_positive\",\"confidence\":\"high\",\"severity\":\"High\",\"summary\":\"Ten MFA-interrupted sign-in attempts for Ada Marsh (Contracts Manager, handles CUI-marked proposal material) arrived from 203.0.113.7 between 17:00:00Z and 17:03:00Z, one every 20 seconds. The IP is a rotating residential proxy exit in the NL, flagged suspicious and seen in other tenants' MFA-prompt bombing reports. Ada works from Virginia, her usual country is US, and this IP is not in her known IPs. Reaching the MFA stage normally means the primary credential was accepted, so the password is probably compromised. The supplied rows show no successful sign-in (ResultType 0) and no completed approval, but that is not confirmed for the 7 minutes between the last row and the 17:10Z alert, or afterwards. Treat as an active MFA-fatigue attempt against a valid password until a human confirms no approval occurred.\",\"timeline\":[{\"time\":\"2026-10-27T17:00:00Z\",\"event\":\"First sign-in attempt from 203.0.113.7 interrupted by MFA requirement (50074).\"},{\"time\":\"2026-10-27T17:00:20Z-17:01:40Z\",\"event\":\"Five more 50074 events at exactly 20-second intervals, suggesting automated retries.\"},{\"time\":\"2026-10-27T17:02:00Z\",\"event\":\"Result code changes to 50076 (MFA required) for the same user and IP, with the same cadence.\"},{\"time\":\"2026-10-27T17:03:00Z\",\"event\":\"Tenth and last event in the evidence (50076). The burst totals 10 events over 3 minutes, with no success row.\"},{\"time\":\"2026-10-27T17:10:00Z\",\"event\":\"Detection fired. Activity after 17:03Z is not included in the evidence.\"}],\"key_evidence\":[\"10 events in 3 minutes from a single IP, spaced exactly 20 seconds apart. The regular cadence points to scripted prompt generation, not a person retrying.\",\"203.0.113.7 is a residential proxy exit (AS64520, NL) rated suspicious, with notes saying it has appeared in other tenants' MFA-prompt bombing reports.\",\"The IP is not among Ada's known IPs (198.51.100.10, 198.51.100.24), and NL is outside her usual country (US). She works hybrid from Virginia.\",\"Her only MFA method is Microsoft Authenticator push, which is the method exposed to prompt-bombing and approval-by-fatigue.\",\"Codes 50074 and 50076 are MFA-required results, which are normally returned after the first factor is accepted. This suggests the attacker already has her password.\",\"Ada is a non-admin who handles subcontractor agreements and CUI-marked material, so a compromise puts CUI at risk under the NIST SP 800-171 obligations.\",\"No ResultType 0 and no 500121 (MFA denied/failed) appear in the evidence, so the outcome of the prompts is unknown.\"],\"benign_explanations_considered\":[\"Ada herself signing in through a VPN or while traveling: the IP is a known residential proxy rated suspicious, she works from Virginia, and 10 prompts at fixed 20-second intervals do not look like a person logging in.\",\"A stale or misconfigured client (cached token, legacy app, mail client) retrying automatically: possible given the regular cadence, but the source is an NL proxy exit, not one of her known IPs, so it is unlikely. User agent and client app are not in the evidence.\",\"Policy or configuration change forcing re-registration or a new-location MFA prompt (50076 wording): this would not explain the proxy IP or the repeated prompts over 3 minutes.\",\"A red-team or penetration test: no evidence of authorization is provided. Confirm with management before downgrading.\"],\"recommended_actions\":[{\"action\":\"reset_password\",\"target\":\"ada.marsh@harborline.example\",\"rationale\":\"MFA-stage results imply the first factor was accepted from the attacker's IP, so the password should be treated as known to the attacker.\"},{\"action\":\"revoke_sessions\",\"target\":\"ada.marsh@harborline.example\",\"rationale\":\"Invalidate refresh tokens and sessions in case any prompt was approved after 17:03Z or a session was already established.\"},{\"action\":\"block_ip\",\"target\":\"203.0.113.7\",\"rationale\":\"Known suspicious proxy exit tied to MFA-bombing in other tenants. This is a low-cost block, though rotating exits limit its value.\"},{\"action\":\"notify_user\",\"target\":\"ada.marsh@harborline.example\",\"rationale\":\"Ask whether she received or approved any unexpected Authenticator prompts around 17:00-17:03Z, and tell her not to approve unsolicited prompts. Contact her by a channel other than email or Teams in case the account is compromised.\"}],\"attack_mapping\":[{\"technique_id\":\"T1621\",\"technique_name\":\"Multi-Factor Authentication Request Generation\",\"tactic\":\"Credential Access\"},{\"technique_id\":\"T1078.004\",\"technique_name\":\"Valid Accounts: Cloud Accounts\",\"tactic\":\"Initial Access\"},{\"technique_id\":\"T1090.002\",\"technique_name\":\"Proxy: External Proxy\",\"tactic\":\"Command and Control\"}],\"detection_tuning_notes\":[\"The rule is useful here. It combines a high prompt count, a short window, and a single source IP, and the enrichment (proxy reputation, unknown IP, unusual country) confirms intent.\",\"The rule fired at 17:10Z, 7 minutes after the last event. Reducing latency would help, since an approved prompt gives the attacker a session within seconds.\",\"Add a correlation step that checks for ResultType 0 (or a successful MFA completion) for the same user after the burst, from the same IP or any new IP, and raise severity to Critical if found.\",\"The rule matches 50074 and 50076, which are MFA-required results and not proof that a push was sent or denied. Consider also counting 500121 (MFA denied/failed) and 50072/50158-type results, and show the user's MFA method in the output so push-based users are prioritized.\",\"Include UserAgent, ClientAppUsed, and location columns in the output so the analyst can quickly tell a script from a stale client.\",\"Join the IP reputation feed in the rule itself so proxy-exit IPs auto-raise severity. Also consider alerting on multiple users hit from the same IP.\"],\"open_questions\":[\"Did any sign-in from 203.0.113.7 or any other unknown IP succeed for this user after 17:03Z (ResultType 0)? Were there any approved Authenticator prompts in the MFA activity logs?\",\"Did Ada receive and approve any Authenticator prompts, and did she report any?\",\"How was the password obtained (phishing, credential stuffing, reuse, infostealer)? Is there earlier password-spray or failed-password (50126) activity against her or others from this IP?\",\"Were any other Harborline users targeted from 203.0.113.7 or AS64520?\",\"What were the client app, user agent, and target resource for these attempts?\",\"If a session was established, were there mailbox rule creations, new MFA method registrations, or SharePoint/OneDrive access to CUI after 17:03Z? If any prompt was approved, MFA re-registration should be added to the actions.\"]}"
+  },
+  "assessment": {
+    "verdict": "true_positive",
+    "confidence": "high",
+    "severity": "High",
+    "summary": "Ten MFA-interrupted sign-in attempts for Ada Marsh (Contracts Manager, handles CUI-marked proposal material) arrived from 203.0.113.7 between 17:00:00Z and 17:03:00Z, one every 20 seconds. The IP is a rotating residential proxy exit in the NL, flagged suspicious and seen in other tenants' MFA-prompt bombing reports. Ada works from Virginia, her usual country is US, and this IP is not in her known IPs. Reaching the MFA stage normally means the primary credential was accepted, so the password is probably compromised. The supplied rows show no successful sign-in (ResultType 0) and no completed approval, but that is not confirmed for the 7 minutes between the last row and the 17:10Z alert, or afterwards. Treat as an active MFA-fatigue attempt against a valid password until a human confirms no approval occurred.",
+    "timeline": [
+      {
+        "time": "2026-10-27T17:00:00Z",
+        "event": "First sign-in attempt from 203.0.113.7 interrupted by MFA requirement (50074)."
+      },
+      {
+        "time": "2026-10-27T17:00:20Z-17:01:40Z",
+        "event": "Five more 50074 events at exactly 20-second intervals, suggesting automated retries."
+      },
+      {
+        "time": "2026-10-27T17:02:00Z",
+        "event": "Result code changes to 50076 (MFA required) for the same user and IP, with the same cadence."
+      },
+      {
+        "time": "2026-10-27T17:03:00Z",
+        "event": "Tenth and last event in the evidence (50076). The burst totals 10 events over 3 minutes, with no success row."
+      },
+      {
+        "time": "2026-10-27T17:10:00Z",
+        "event": "Detection fired. Activity after 17:03Z is not included in the evidence."
+      }
+    ],
+    "key_evidence": [
+      "10 events in 3 minutes from a single IP, spaced exactly 20 seconds apart. The regular cadence points to scripted prompt generation, not a person retrying.",
+      "203.0.113.7 is a residential proxy exit (AS64520, NL) rated suspicious, with notes saying it has appeared in other tenants' MFA-prompt bombing reports.",
+      "The IP is not among Ada's known IPs (198.51.100.10, 198.51.100.24), and NL is outside her usual country (US). She works hybrid from Virginia.",
+      "Her only MFA method is Microsoft Authenticator push, which is the method exposed to prompt-bombing and approval-by-fatigue.",
+      "Codes 50074 and 50076 are MFA-required results, which are normally returned after the first factor is accepted. This suggests the attacker already has her password.",
+      "Ada is a non-admin who handles subcontractor agreements and CUI-marked material, so a compromise puts CUI at risk under the NIST SP 800-171 obligations.",
+      "No ResultType 0 and no 500121 (MFA denied/failed) appear in the evidence, so the outcome of the prompts is unknown."
+    ],
+    "benign_explanations_considered": [
+      "Ada herself signing in through a VPN or while traveling: the IP is a known residential proxy rated suspicious, she works from Virginia, and 10 prompts at fixed 20-second intervals do not look like a person logging in.",
+      "A stale or misconfigured client (cached token, legacy app, mail client) retrying automatically: possible given the regular cadence, but the source is an NL proxy exit, not one of her known IPs, so it is unlikely. User agent and client app are not in the evidence.",
+      "Policy or configuration change forcing re-registration or a new-location MFA prompt (50076 wording): this would not explain the proxy IP or the repeated prompts over 3 minutes.",
+      "A red-team or penetration test: no evidence of authorization is provided. Confirm with management before downgrading."
+    ],
+    "recommended_actions": [
+      {
+        "action": "reset_password",
+        "target": "ada.marsh@harborline.example",
+        "rationale": "MFA-stage results imply the first factor was accepted from the attacker's IP, so the password should be treated as known to the attacker."
+      },
+      {
+        "action": "revoke_sessions",
+        "target": "ada.marsh@harborline.example",
+        "rationale": "Invalidate refresh tokens and sessions in case any prompt was approved after 17:03Z or a session was already established."
+      },
+      {
+        "action": "block_ip",
+        "target": "203.0.113.7",
+        "rationale": "Known suspicious proxy exit tied to MFA-bombing in other tenants. This is a low-cost block, though rotating exits limit its value."
+      },
+      {
+        "action": "notify_user",
+        "target": "ada.marsh@harborline.example",
+        "rationale": "Ask whether she received or approved any unexpected Authenticator prompts around 17:00-17:03Z, and tell her not to approve unsolicited prompts. Contact her by a channel other than email or Teams in case the account is compromised."
+      }
+    ],
+    "attack_mapping": [
+      {
+        "technique_id": "T1621",
+        "technique_name": "Multi-Factor Authentication Request Generation",
+        "tactic": "Credential Access"
+      },
+      {
+        "technique_id": "T1078.004",
+        "technique_name": "Valid Accounts: Cloud Accounts",
+        "tactic": "Initial Access"
+      },
+      {
+        "technique_id": "T1090.002",
+        "technique_name": "Proxy: External Proxy",
+        "tactic": "Command and Control"
+      }
+    ],
+    "detection_tuning_notes": [
+      "The rule is useful here. It combines a high prompt count, a short window, and a single source IP, and the enrichment (proxy reputation, unknown IP, unusual country) confirms intent.",
+      "The rule fired at 17:10Z, 7 minutes after the last event. Reducing latency would help, since an approved prompt gives the attacker a session within seconds.",
+      "Add a correlation step that checks for ResultType 0 (or a successful MFA completion) for the same user after the burst, from the same IP or any new IP, and raise severity to Critical if found.",
+      "The rule matches 50074 and 50076, which are MFA-required results and not proof that a push was sent or denied. Consider also counting 500121 (MFA denied/failed) and 50072/50158-type results, and show the user's MFA method in the output so push-based users are prioritized.",
+      "Include UserAgent, ClientAppUsed, and location columns in the output so the analyst can quickly tell a script from a stale client.",
+      "Join the IP reputation feed in the rule itself so proxy-exit IPs auto-raise severity. Also consider alerting on multiple users hit from the same IP."
+    ],
+    "open_questions": [
+      "Did any sign-in from 203.0.113.7 or any other unknown IP succeed for this user after 17:03Z (ResultType 0)? Were there any approved Authenticator prompts in the MFA activity logs?",
+      "Did Ada receive and approve any Authenticator prompts, and did she report any?",
+      "How was the password obtained (phishing, credential stuffing, reuse, infostealer)? Is there earlier password-spray or failed-password (50126) activity against her or others from this IP?",
+      "Were any other Harborline users targeted from 203.0.113.7 or AS64520?",
+      "What were the client app, user agent, and target resource for these attempts?",
+      "If a session was established, were there mailbox rule creations, new MFA method registrations, or SharePoint/OneDrive access to CUI after 17:03Z? If any prompt was approved, MFA re-registration should be added to the actions."
+    ]
+  },
+  "decision": {
+    "analyst": "Edward Griggs",
+    "decided_at": "2026-10-29T04:03:16.594079Z",
+    "verdict": "true_positive",
+    "severity": "High",
+    "rationale": "Agree with the AI. Ten MFA-required results in three minutes from a residential proxy exit Ada has never used, at a fixed 20-second cadence, is scripted prompt bombing, not a user fighting a stale client. Results 50074 and 50076 only appear after the password is accepted, so the password is burned even though no prompt was approved in the window. Contain the account, not the IP.",
+    "actions": [
+      {
+        "action": "reset_password",
+        "target": "ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "First factor was accepted from the attacker's IP. The password is known.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "revoke_sessions",
+        "target": "ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Cheap insurance against an approval after 17:03Z that the alert window did not show.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "block_ip",
+        "target": "203.0.113.7",
+        "source": "ai",
+        "status": "rejected",
+        "reason": "Rotating residential proxy. The next attempt comes from a different exit, and blocking residential space risks real users. The control that matters is on the account.",
+        "approver": "Edward Griggs"
+      },
+      {
+        "action": "notify_user",
+        "target": "ada.marsh@harborline.example",
+        "source": "ai",
+        "status": "approved",
+        "reason": "Confirm out of band that she denied every prompt and tell her to report the next one.",
+        "approver": "Edward Griggs"
+      }
+    ],
+    "tuning_notes": [
+      "Seven minutes from last prompt to alert is too slow for push fatigue; one approval gives the attacker a session in seconds. Move this rule to near-real-time."
+    ]
+  }
+}

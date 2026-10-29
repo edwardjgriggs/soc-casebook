@@ -1,0 +1,35 @@
+{
+  "analyst": "Edward Griggs",
+  "verdict": "true_positive",
+  "severity": "High",
+  "rationale": "Agree with the AI. Ten MFA-required results in three minutes from a residential proxy exit Ada has never used, at a fixed 20-second cadence, is scripted prompt bombing, not a user fighting a stale client. Results 50074 and 50076 only appear after the password is accepted, so the password is burned even though no prompt was approved in the window. Contain the account, not the IP.",
+  "ai_actions": [
+    {
+      "action": "reset_password",
+      "target": "ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "First factor was accepted from the attacker's IP. The password is known."
+    },
+    {
+      "action": "revoke_sessions",
+      "target": "ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "Cheap insurance against an approval after 17:03Z that the alert window did not show."
+    },
+    {
+      "action": "block_ip",
+      "target": "203.0.113.7",
+      "status": "rejected",
+      "reason": "Rotating residential proxy. The next attempt comes from a different exit, and blocking residential space risks real users. The control that matters is on the account."
+    },
+    {
+      "action": "notify_user",
+      "target": "ada.marsh@harborline.example",
+      "status": "approved",
+      "reason": "Confirm out of band that she denied every prompt and tell her to report the next one."
+    }
+  ],
+  "tuning_notes": [
+    "Seven minutes from last prompt to alert is too slow for push fatigue; one approval gives the attacker a session in seconds. Move this rule to near-real-time."
+  ]
+}
