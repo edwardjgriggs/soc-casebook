@@ -18,6 +18,7 @@ from casebook.assess import AssessmentError, assess
 from casebook.enrich import Context, enrich
 from casebook.models import load_alert
 from casebook.records import Decision, Run, load_run, save_run
+from casebook.replay import replay
 
 
 def _err(msg: str) -> None:
@@ -65,6 +66,7 @@ def _finish(run: Run, run_path: Path, args: argparse.Namespace) -> int:
 
     run.decision = decision
     save_run(run, run_path)
+    replay(run_path.parent, Path(args.cases_dir))
     agree = "agrees with" if decision.agrees_with(run.assessment) else "OVERRIDES"
     approved = sum(a.status == "approved" for a in decision.actions)
     print(f"\nRecorded {run_path.name}: {decision.analyst} {agree} the AI "
@@ -115,6 +117,7 @@ def _triage(args: argparse.Namespace) -> int:
         assessment=assessment,
     )
     save_run(run, run_path)  # the AI output is kept even if no decision follows
+    replay(run_path.parent, Path(args.cases_dir))
     return _finish(run, run_path, args)
 
 
@@ -128,8 +131,21 @@ def _decide(args: argparse.Namespace) -> int:
     return _finish(run, run_path, args)
 
 
-def _replay(_args: argparse.Namespace) -> int:
-    print("No recorded runs yet. Replay arrives with the renderer.")
+def _replay(args: argparse.Namespace) -> int:
+    runs_dir, cases_dir = Path(args.runs_dir), Path(args.cases_dir)
+    count = len(list(runs_dir.glob("*.json")))
+    if count == 0:
+        print(f"No recorded runs in {runs_dir}.")
+        return 0
+    stale = replay(runs_dir, cases_dir, check=args.check)
+    if args.check:
+        if stale:
+            _err("case files are out of date with runs/: " + ", ".join(stale)
+                 + ". Run `casebook replay`.")
+            return 1
+        print(f"{count} case files match their recorded runs.")
+        return 0
+    print(f"Rebuilt {count} case files in {cases_dir} ({len(stale)} changed).")
     return 0
 
 
@@ -147,6 +163,7 @@ def build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     parser.add_argument("--runs-dir", default=str(paths.RUNS), help=argparse.SUPPRESS)
+    parser.add_argument("--cases-dir", default=str(paths.CASES), help=argparse.SUPPRESS)
     sub = parser.add_subparsers(dest="command", required=True)
 
     triage = sub.add_parser("triage", help="enrich an alert, get the AI assessment, decide")
@@ -161,8 +178,10 @@ def build_parser() -> argparse.ArgumentParser:
     _add_decision_args(decide)
     decide.set_defaults(func=_decide)
 
-    replay = sub.add_parser("replay", help="rebuild case files from recorded runs (no API key)")
-    replay.set_defaults(func=_replay)
+    rp = sub.add_parser("replay", help="rebuild case files from recorded runs (no API key)")
+    rp.add_argument("--check", action="store_true",
+                    help="fail if any committed case file differs from its run (for CI)")
+    rp.set_defaults(func=_replay)
 
     return parser
 

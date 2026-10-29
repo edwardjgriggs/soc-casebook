@@ -35,7 +35,7 @@ def with_key(monkeypatch, fake_client):
 
 
 def _triage(tmp_path, *extra):
-    return main(["--runs-dir", str(tmp_path / "runs"), "triage", str(SAMPLE_ALERT), *extra])
+    return main(["--runs-dir", str(tmp_path / "runs"), "--cases-dir", str(tmp_path / "cases"), "triage", str(SAMPLE_ALERT), *extra])
 
 
 def test_triage_records_run_with_decision(tmp_path, with_key, decisions, capsys):
@@ -81,14 +81,14 @@ def test_decide_applies_to_recorded_run(tmp_path, with_key, decisions, monkeypat
     monkeypatch.setattr("builtins.input", lambda _p: (_ for _ in ()).throw(EOFError))
     assert _triage(tmp_path, "--analyst", "x") == 2
     calls_before = len(with_key.calls)
-    assert main(["--runs-dir", str(tmp_path / "runs"), "decide", "sample-mfa-burst",
+    assert main(["--runs-dir", str(tmp_path / "runs"), "--cases-dir", str(tmp_path / "cases"), "decide", "sample-mfa-burst",
                  "--decisions", str(decisions)]) == 0
     assert len(with_key.calls) == calls_before  # no new model call
     assert load_run(tmp_path / "runs" / "sample-mfa-burst.json").decision is not None
 
 
 def test_decide_unknown_case(tmp_path, capsys):
-    assert main(["--runs-dir", str(tmp_path), "decide", "nope"]) == 1
+    assert main(["--runs-dir", str(tmp_path), "--cases-dir", str(tmp_path / "cases"), "decide", "nope"]) == 1
     assert "no recorded run" in capsys.readouterr().err
 
 
