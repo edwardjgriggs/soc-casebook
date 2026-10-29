@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "soc-casebook"
+version = "0.1.0"
+description = "AI does first-pass alert triage, a human makes the call, and every alert ends in a written case file."
+readme = "README.md"
+requires-python = ">=3.11"
+authors = [{ name = "Edward Griggs" }]
+dependencies = [
+    "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+casebook = "casebook.cli:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/casebook"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
